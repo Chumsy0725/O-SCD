@@ -1,7 +1,7 @@
 # Changes in Real Time: Online Scene Change Detection with Multi-View Fusion
 *Chamuditha Jayanga, Jason Lai, Lloyd Windrim, Donald Dansereau, Niko Suenderhauf, Dimity Miller*
 
-[![Static Badge](https://img.shields.io/badge/Paper-%23ecf0f1?logo=arxiv&logoColor=%23B31B1B&link=https%3A%2F%2Fchumsy0725.github.io%2FMV-3DCD%2F)](https://arxiv.org/abs/xxxx) 
+[![Static Badge](https://img.shields.io/badge/Paper-%23ecf0f1?logo=arxiv&logoColor=%23B31B1B&link=https%3A%2F%2Fchumsy0725.github.io%2FMV-3DCD%2F)](https://arxiv.org/abs/2511.12370/) 
 
 ![alt text](./assets/logos.png)
 
