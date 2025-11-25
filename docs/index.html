@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Changes in Real Time: Online Scene Change Detection with Multi-View Fusion">
+  <meta name="keywords"
+    content="Online Scene Change Detection, Real-time Change Detection, Multi-view Fusion, Pose-agnostic Change Detection, Label-free Change Detection, 3D Gaussian Splatting, Scene Change Detection, Multi-view Change Localization">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OSCD</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/dics.original.css">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/oscd_favicon.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/dics.original.js"></script>
+</head>
+
+<body>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">
+              <span class="gradient-text" style="font-size: 1em;">Changes in Real Time</span>: Online Scene Change
+              Detection with Multi-View Fusion
+            </h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="">Chamuditha Jayanga </a><sup>1,2</sup>,</span>
+              <span class="author-block">
+                <a href="">Jason Lai </a><sup>3</sup>,</span>
+              <span class="author-block">
+                <a href="">Lloyd Windrim </a><sup>2,4</sup>,
+              </span>
+              <span class="author-block">
+                <a href="">Donald Dansereau </a><sup>2,3</sup>,
+              </span>
+              <span class="author-block">
+                <a href="">Niko Suenderhauf </a><sup>1,2</sup>,
+              </span>
+              <span class="author-block">
+                <a href="">Dimity Miller </a><sup>1,2</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>QUT Centre for Robotics, &nbsp; </span>
+              <span class="author-block"><sup>2</sup>ARIAM Hub, &nbsp; </span>
+              <span class="author-block"><sup>3</sup>ACFR, University of Sydney, &nbsp; </span>
+              <span class="author-block"><sup>4</sup>Abyss Solutions</span>
+            </div>
+
+            <!-- Uncomment and update when paper is accepted -->
+            <!-- <div class="is-size-6 publication-authors">
+            <span class="gradient-text">CONFERENCE NAME YEAR</span>
+          </div> -->
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2511.12370" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2511.12370" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/Chumsy0725/O-SCD"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code (Coming Soon)</span>
+                  </a>
+                </span>
+                <!-- Dataset Link (placeholder - uncomment when available) -->
+                <!--               <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Dataset</span>
+                </a>
+              </span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Abstract Section -->
+  <section class="section">
+    <div class="container is-centered has-text-centered">
+      <div class="columns is-four-fifths is-centered">
+        <div class="column is-10">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-centered ">
+            <p>
+              <strong>Online Scene Change Detection (SCD)</strong> is an extremely challenging problem that requires an
+              agent to detect relevant changes on the fly while observing the scene from unconstrained viewpoints.
+              Existing online SCD methods are significantly less accurate than offline approaches. We present the
+              <strong>first online SCD approach</strong> that is <span class="metric-highlight">pose-agnostic</span>,
+              <span class="metric-highlight">label-free</span>, and ensures <span class="metric-highlight">multi-view
+                consistency</span>, while operating at <strong class="metric-highlight">over 10 FPS</strong> and
+              achieving <strong>new state-of-the-art performance</strong>, surpassing even the best offline approaches.
+            </p>
+            <p>
+              Our method introduces a new <strong>self-supervised fusion loss</strong> to infer scene changes from
+              multiple cues and observations, <strong>PnP-based fast pose estimation</strong> against the reference
+              scene, and a <strong>fast change-guided representation update strategy</strong> for the 3D Gaussian
+              Splatting. Extensive experiments on complex real-world datasets demonstrate that our approach
+              outperforms both online and offline baselines.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Hero Figure Section -->
+  <section class="section" style="background-color: #f8f9fa; padding: 3rem 0;">
+    <div class="container is-centered has-text-centered">
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <img src="./static/images/FPS_vs_F1.svg" alt="Performance Comparison"
+              style="max-width: 100%; height: auto; margin-left: -100px;">
+            <p
+              style="margin-top: 1.5rem; font-size: 1rem; line-height: 1.6; color: #333; text-align: center; max-width: 900px; margin-left: auto; margin-right: auto;">
+              Our online Scene Change Detection method establishes a new state of the art, detecting changes more
+              reliably than all prior methods, including the strongest offline baselines. It operates at a runtime
+              comparable to the fastest online approaches while achieving substantially higher F1 scores. These gains
+              are enabled by a self-supervised loss enforcing multi-view consistency and a lightweight PnP-based pose
+              estimation module.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Method Overview Section -->
+  <section class="section">
+    <div class="container is-centered has-text-centered">
+      <div class="columns is-four-fifths is-centered">
+        <div class="column is-10">
+          <h2 class="title is-3">Method Overview</h2>
+          <div class="content has-text-centered">
+            <div style="display: inline-block; max-width: 100%;">
+              <img src="./static/images/main.jpeg" alt="Method Overview"
+                style="width: 100%; height: auto; border-radius: 10px; display: block;">
+              <p style="margin-top: 1.5rem; font-size: 1rem; line-height: 1.7; color: #333; text-align: center;">
+                We register an incoming inference image <em>I</em><sub>inf</sub><sup><em>k</em></sup> to an existing
+                reference representation ℛ<sub>ref</sub> with a <span
+                  style="color: #dc3545; font-weight: 600;">lightweight PnP-based pose estimator</span>. Using the
+                estimated pose <em>P</em><sub>inf</sub><sup><em>k</em></sup> and ℛ<sub>ref</sub> to render an aligned
+                image <em>I</em><sub>ren</sub><sup><em>k</em></sup>, we extract change cues
+                <em>C</em><sup><em>k</em></sup> as a combination of pixel- and feature-level cues. <span
+                  style="color: #228b22; font-weight: 600;">Our novel self-supervised fusion loss
+                  <em>L</em><sub>SSF</sub></span> guides the fusion of all observed change cues to build a change
+                representation ℛ<sub>change</sub> that collectively learns change information from multiple viewpoints
+                and
+                infer change masks <em>M</em><sup><em>k</em></sup>. Finally, we <span
+                  style="color: #0066cc; font-weight: 600;">selectively reconstruct changed regions</span> to update the
+                3D Gaussian Splatting
+                representation to the current state ℛ<sub>inf</sub>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Results Section -->
+  <section class="section" style="background-color: #f8f9fa; padding: 3rem 0;">
+    <div class="container is-centered has-text-centered">
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <h2 class="title is-3">Qualitative Results</h2>
+
+          <!-- Legend -->
+          <div style="margin-bottom: 2rem;">
+            <img src="./static/images/legend.png" alt="Legend" style="max-width: 800px; height: auto;">
+          </div>
+
+          <!-- Carousel and Caption Container -->
+          <div style="display: inline-block; max-width: 100%; width: 100%;">
+            <!-- Carousel -->
+            <div id="results-carousel" style="position: relative;">
+              <div class="swiper-container"
+                style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                <div class="swiper-wrapper">
+                  <!-- Slide 1: Lounge -->
+                  <div class="swiper-slide">
+                    <div style="background: white; padding: 1.5rem;">
+                      <h3 class="title is-5" style="margin-bottom: 1rem;">Lounge</h3>
+                      <img src="./static/images/lounge.png" alt="Lounge Results"
+                        style="width: 100%; height: 500px; object-fit: contain; display: block;">
+                    </div>
+                  </div>
+
+                  <!-- Slide 2: Porch -->
+                  <div class="swiper-slide">
+                    <div style="background: white; padding: 1.5rem;">
+                      <h3 class="title is-5" style="margin-bottom: 1rem;">Porch</h3>
+                      <img src="./static/images/porch.png" alt="Porch Results"
+                        style="width: 100%; height: 500px; object-fit: contain; display: block;">
+                    </div>
+                  </div>
+
+                  <!-- Slide 3: Meeting Room -->
+                  <div class="swiper-slide">
+                    <div style="background: white; padding: 1.5rem;">
+                      <h3 class="title is-5" style="margin-bottom: 1rem;">Meeting Room</h3>
+                      <img src="./static/images/meeting_room.png" alt="Meeting Room Results"
+                        style="width: 100%; height: 500px; object-fit: contain; display: block;">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Navigation arrows -->
+                <div class="swiper-button-prev" style="color: #667eea;"></div>
+                <div class="swiper-button-next" style="color: #667eea;"></div>
+
+                <!-- Pagination dots -->
+                <div class="swiper-pagination"></div>
+              </div>
+            </div>
+
+            <p style="margin-top: 1.5rem; font-size: 1rem; color: #555; text-align: center; line-height: 1.7;">
+              <strong>Qualitative comparison with MV3DCD.</strong> MV3DCD's hard thresholding and intersection heuristic
+              lead to missed or spurious detections, especially for subtle appearance changes in semantically similar
+              objects (red-to-blue T-shaped object in Meeting Room, blue-to-black bench in Porch). Hard thresholding
+              risks
+              discarding subtle but important changes, while the intersection fails to capture true changes unless
+              present
+              in both masks. Our method jointly learns complementary change information in pixel- and feature-level cues
+              via our novel self-supervised loss, capturing fine-grained changes and achieving state-of-the-art
+              performance
+              in both online and offline settings.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const resultsSwiper = new Swiper('#results-carousel .swiper-container', {
+        loop: true,
+        autoplay: {
+          delay: 4000,
+          disableOnInteraction: false,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+    });
+  </script>
+
+
+
+  <!-- Quantitative Results Section -->
+  <section class="section">
+    <div class="container is-centered has-text-centered">
+      <div class="columns is-centered">
+        <div class="column is-11">
+          <h2 class="title is-3">Quantitative Results</h2>
+
+          <p
+            style="margin-bottom: 2rem; font-size: 1rem; color: #555; line-height: 1.6; max-width: 1000px; margin-left: auto; margin-right: auto;">
+            Quantitative results for SCD on PASLCD averaged over all 20 instances.
+            <strong>LF</strong>: Label-Free, <strong>PA</strong>: Pose-Agnostic, <strong>MV</strong>: Multi-View
+            consistency for change detection.
+            We report total runtime for <span
+              style="background: #ffe6e6; padding: 2px 6px; border-radius: 3px;">offline</span> methods and operating
+            frame rate (FPS) for <span style="background: #e6f3ff; padding: 2px 6px; border-radius: 3px;">online</span>
+            methods.
+            Our method achieves the best performance in both settings.
+          </p>
+
+          <!-- Two Tables Side by Side -->
+          <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+
+            <!-- Offline Methods Table -->
+            <div style="flex: 1; min-width: 450px; max-width: 550px;">
+              <h3 class="title is-5" style="margin-bottom: 1rem; color: #dc3545;">
+                <span style="background: #ffe6e6; padding: 4px 12px; border-radius: 5px;">Offline Methods</span>
+              </h3>
+              <div style="overflow-x: auto;">
+                <table
+                  style="width: 100%; border-collapse: collapse; box-shadow: 0 2px 10px rgba(0,0,0,0.1); background: white; border-radius: 8px; overflow: hidden; font-size: 0.9em;">
+                  <thead>
+                    <tr style="background: #ffb3ba; color: #333;">
+                      <th style="padding: 10px 12px; text-align: left; font-weight: 600;">Method</th>
+                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">LF</th>
+                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">PA</th>
+                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">MV</th>
+                      <th style="padding: 10px 12px; text-align: center; font-weight: 600;">mIoU ↑</th>
+                      <th style="padding: 10px 12px; text-align: center; font-weight: 600;">F1 ↑</th>
+                      <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">Runtime
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="background: #ffe6e6;">
+                      <td style="padding: 8px 12px;">R-SCD</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.118</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.199</td>
+                      <td style="padding: 8px 12px; text-align: center;">194s</td>
+                    </tr>
+                    <tr style="background: #fff0f0;">
+                      <td style="padding: 8px 12px;">CYWS2D</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.273</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.398</td>
+                      <td style="padding: 8px 12px; text-align: center; font-style: italic;">189s
+                      </td>
+                    </tr>
+                    <tr style="background: #ffe6e6;">
+                      <td style="padding: 8px 12px;">GeSCD</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.477</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.611</td>
+                      <td style="padding: 8px 12px; text-align: center;">298s</td>
+                    </tr>
+                    <tr style="background: #fff0f0;">
+                      <td style="padding: 8px 12px;">ZeroSCD</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.306</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.414</td>
+                      <td style="padding: 8px 12px; text-align: center;">409s</td>
+                    </tr>
+                    <tr style="background: #ffe6e6;">
+                      <td style="padding: 8px 12px;">3DGS-CD</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.209</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.339</td>
+                      <td style="padding: 8px 12px; text-align: center;">824s</td>
+                    </tr>
+                    <tr style="background: #fff0f0;">
+                      <td style="padding: 8px 12px;">MV3DCD</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 12px; text-align: center; font-style: italic;">0.478
+                      </td>
+                      <td style="padding: 8px 12px; text-align: center; font-style: italic;">0.628
+                      </td>
+                      <td style="padding: 8px 12px; text-align: center;">479s</td>
+                    </tr>
+                    <tr style="background: #ffe6e6; font-weight: 600;">
+                      <td style="padding: 8px 12px;"><strong>Ours</strong></td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">0.552
+                      </td>
+                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">0.694
+                      </td>
+                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">156s
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Online Methods Table -->
+            <div style="flex: 1; min-width: 450px; max-width: 550px;">
+              <h3 class="title is-5" style="margin-bottom: 1rem; color: #0066cc;">
+                <span style="background: #e6f3ff; padding: 4px 12px; border-radius: 5px;">Online Methods</span>
+              </h3>
+              <div style="overflow-x: auto;">
+                <table
+                  style="width: 100%; border-collapse: collapse; box-shadow: 0 2px 10px rgba(0,0,0,0.1); background: white; border-radius: 8px; overflow: hidden; font-size: 0.9em;">
+                  <thead>
+                    <tr style="background: #bae1ff; color: #333;">
+                      <th style="padding: 10px 12px; text-align: left; font-weight: 600;">Method</th>
+                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">LF</th>
+                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">PA</th>
+                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">MV</th>
+                      <th style="padding: 10px 12px; text-align: center; font-weight: 600;">mIoU ↑</th>
+                      <th style="padding: 10px 12px; text-align: center; font-weight: 600;">F1 ↑</th>
+                      <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">FPS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="background: #e6f3ff;">
+                      <td style="padding: 8px 12px;">ChangeSim</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.018</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.034</td>
+                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">11.5
+                      </td>
+                    </tr>
+                    <tr style="background: #f0f8ff;">
+                      <td style="padding: 8px 12px;">CS+CYWS2D</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 12px; text-align: center; font-style: italic;">0.243
+                      </td>
+                      <td style="padding: 8px 12px; text-align: center; font-style: italic;">0.360
+                      </td>
+                      <td style="padding: 8px 12px; text-align: center;">8.2</td>
+                    </tr>
+                    <tr style="background: #e6f3ff;">
+                      <td style="padding: 8px 12px;">CS+GeSCD</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.181</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.270</td>
+                      <td style="padding: 8px 12px; text-align: center;">&lt;1</td>
+                    </tr>
+                    <tr style="background: #f0f8ff;">
+                      <td style="padding: 8px 12px;">OmniposeAD</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.168</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.262</td>
+                      <td style="padding: 8px 12px; text-align: center;">&lt;1</td>
+                    </tr>
+                    <tr style="background: #e6f3ff;">
+                      <td style="padding: 8px 12px;">SplatPose</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.173</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.281</td>
+                      <td style="padding: 8px 12px; text-align: center;">&lt;1</td>
+                    </tr>
+                    <tr style="background: #f0f8ff;">
+                      <td style="padding: 8px 12px;">SplatPose+</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">—</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.237</td>
+                      <td style="padding: 8px 12px; text-align: center;">0.358</td>
+                      <td style="padding: 8px 12px; text-align: center;">&lt;1</td>
+                    </tr>
+                    <tr style="background: #e6f3ff; font-weight: 600;">
+                      <td style="padding: 8px 12px;"><strong>Ours</strong></td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 8px; text-align: center;">✓</td>
+                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">0.486
+                      </td>
+                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">0.638
+                      </td>
+                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">11.2
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Video Section (Optional - uncomment when video is available) -->
+  <!-- <section class="section">
+  <div class="container is-centered has-text-centered">
+    <div class="columns is-four-fifths is-centered">
+      <div class="column is-10">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+  <!-- Change-Guided Efficient Gaussian Representation Update Section -->
+  <section class="section" style="background-color: #f8f9fa; padding: 3rem 0;">
+    <div class="container is-centered has-text-centered">
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <h2 class="title is-3">Change-Guided Efficient Gaussian Representation Update</h2>
+
+          <div class="content has-text-centered">
+            <div style="display: inline-block; max-width: 100%; width: 100%;">
+              <!-- Image -->
+              <img src="./static/images/update.jpeg" alt="Change-Guided Update Comparison"
+                style="width: 100%; height: auto; display: block;">
+
+              <!-- Caption/Description -->
+              <p style="margin-top: 1.5rem; font-size: 1rem; line-height: 1.7; color: #333; text-align: center;">
+                Qualitative comparison of rendered views from the updated representation with CLNeRF and 3DGS (from
+                scratch).
+                Our method more accurately reconstructs changed regions (red boxes) while reusing primitives from
+                ℛ<sub>ref</sub> to preserve high fidelity in unchanged areas (yellow boxes), compared to naïve
+                reconstruction at each time.
+              </p>
+            </div>
+          </div>
+
+          <!-- Quantitative Comparison Table -->
+          <div style="margin-top: 3rem;">
+
+            <div style="overflow-x: auto;">
+              <table
+                style="margin: 0 auto; border-collapse: collapse; box-shadow: 0 2px 10px rgba(0,0,0,0.1); background: white; border-radius: 8px; overflow: hidden; font-size: 0.9em;">
+                <thead>
+                  <tr style="background: #d4a5ff; color: #333;">
+                    <th rowspan="2"
+                      style="padding: 12px 16px; text-align: left; font-weight: 600; border-right: 1px solid #ddd;">
+                      Method</th>
+                    <th colspan="4"
+                      style="padding: 12px 16px; text-align: center; font-weight: 600; border-right: 1px solid #ddd;">
+                      PASLCD</th>
+                    <th colspan="4" style="padding: 12px 16px; text-align: center; font-weight: 600;">CL-Splats</th>
+                  </tr>
+                  <tr style="background: #d4a5ff; color: #333;">
+                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">PSNR (dB) ↑
+                    </th>
+                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">SSIM ↑</th>
+                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">LPIPS ↓
+                    </th>
+                    <th
+                      style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em; border-right: 1px solid #ddd;">
+                      Runtime (s) ↓</th>
+                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">PSNR (dB) ↑
+                    </th>
+                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">SSIM ↑</th>
+                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">LPIPS ↓
+                    </th>
+                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">Runtime (s)
+                      ↓</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="background: #f9f9f9;">
+                    <td style="padding: 10px 16px;">3DGS</td>
+                    <td style="padding: 10px 12px; text-align: center;">22.21</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.7558</td>
+                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">0.2426</td>
+                    <td style="padding: 10px 12px; text-align: center; border-right: 1px solid #ddd;">550</td>
+                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">30.31</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.9319</td>
+                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">0.1178</td>
+                    <td style="padding: 10px 12px; text-align: center;">364</td>
+                  </tr>
+                  <tr style="background: white;">
+                    <td style="padding: 10px 16px;">3DGS-LM</td>
+                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">22.26</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.7562</td>
+                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">0.2422</td>
+                    <td
+                      style="padding: 10px 12px; text-align: center; font-style: italic; border-right: 1px solid #ddd;">
+                      340</td>
+                    <td style="padding: 10px 12px; text-align: center;">29.95</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.9322</td>
+                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">0.1177</td>
+                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">275</td>
+                  </tr>
+                  <tr style="background: #f9f9f9;">
+                    <td style="padding: 10px 16px;">SpeedySplats</td>
+                    <td style="padding: 10px 12px; text-align: center;">22.25</td>
+                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">0.7603</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.2618</td>
+                    <td style="padding: 10px 12px; text-align: center; border-right: 1px solid #ddd;">399</td>
+                    <td style="padding: 10px 12px; text-align: center;">29.89</td>
+                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">0.9349</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.1290</td>
+                    <td style="padding: 10px 12px; text-align: center;">312</td>
+                  </tr>
+                  <tr style="height: 4px; background: #e0e0e0;">
+                    <td colspan="9"></td>
+                  </tr>
+                  <tr style="background: white;">
+                    <td style="padding: 10px 16px;">CLNeRF</td>
+                    <td style="padding: 10px 12px; text-align: center;">22.27</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.6239</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.3907</td>
+                    <td style="padding: 10px 12px; text-align: center; border-right: 1px solid #ddd;">451</td>
+                    <td style="padding: 10px 12px; text-align: center;">26.29</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.7867</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.2235</td>
+                    <td style="padding: 10px 12px; text-align: center;">301</td>
+                  </tr>
+                  <tr style="background: #f9f9f9; font-weight: 600;">
+                    <td style="padding: 10px 16px;"><strong>Ours</strong></td>
+                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">23.70</td>
+                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">0.7868</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.2491</td>
+                    <td style="padding: 10px 12px; text-align: center; font-weight: 700; border-right: 1px solid #ddd;">
+                      42</td>
+                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">30.54</td>
+                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">0.9356</td>
+                    <td style="padding: 10px 12px; text-align: center;">0.1256</td>
+                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">39</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p
+              style="margin-top: 1.5rem; font-size: 1rem; color: #555; line-height: 1.6; max-width: 1000px; margin-left: auto; margin-right: auto; text-align: center;">
+              Quantitative comparison of scene representation update on PASLCD and CL-Splats.
+              Our method achieves comparable or higher reconstruction quality than approaches that fully re-optimize the
+              evolved scene from scratch,
+              while providing updated representations within seconds (&lt;60s), achieving up to <strong>8–9×
+                faster</strong> runtimes. Results are averaged over all instances and scenes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </section>
+
+
+  <!-- BibTeX Section -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title has-text-centered">BibTeX</h2>
+      <pre><code>@article{galappaththige2024online,
+  title={Changes in Real Time: Online Scene Change Detection with Multi-View Fusion},
+  author={Galappaththige, Chamuditha Jayanga and Lai, Jason and Windrim, Lloyd and Dansereau, Donald and S{\"u}nderhauf, Niko and Miller, Dimity},
+  journal={arXiv preprint arXiv:2511.12370},
+  year={2024}
+}</code></pre>
+    </div>
+  </section>
+
+
+  <!-- Acknowledgement Section -->
+  <section class="section">
+    <div class="container is-centered has-text-centered">
+      <div class="columns is-four-fifths is-centered">
+        <div class="column is-10">
+          <h2 class="title is-4">Acknowledgement</h2>
+          <div class="content has-text-centered is-size-6">
+            <p>
+              This work was supported by the ARC Research Hub in Intelligent Robotic Systems for Real-Time Asset
+              Management (IH210100030)
+              and Abyss Solutions. C.J., N.S., and D.M. also acknowledge ongoing support from the QUT Centre for
+              Robotics.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer centered-footer" style="padding: 2rem 1.5rem;">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content" style="font-size: 0.85rem;">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License.</a> This website template is from <a
+                href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. We sincerely thank the authors for
+              developing and open-sourcing this template.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
