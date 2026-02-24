@@ -44,7 +44,7 @@ To run the SCD experiments for all 20 instances, you can use the `run_oscd.sh` s
 bash run_oscd.sh
 ```
 
-To run the Scene Update for all 20 instances, you can use the `run_update.sh` script
+To run the Scene Update for all 20 instances, you can use the `run_update.sh` script (will be released soon).
 ```shell
 bash run_update.sh
 ```
