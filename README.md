@@ -30,3 +30,33 @@ pip install cupy-cuda12x
 pip install -r requirements.txt
 
 ```
+
+I have incorporated the released codebase with [FastGS](https://github.com/fastgs/FastGS). This would give you slightly better and faster performance than reported. 
+
+## Running Experiments
+
+To run the SCD experiments for all 20 instances, you can use the `run_oscd.sh` script
+```shell
+bash run_oscd.sh
+```
+
+To run the Scene Update for all 20 instances, you can use the `run_update.sh` script
+```shell
+bash run_oscd.sh
+```
+
+To initialize the viewer for any given scene (after running Scene Update/SCD), use the `run_viewer.sh` script
+```shell
+bash run_viewer.sh "Scene" "Instance"
+```
+
+### Acknowledgement
+
+Our code is based on [3D Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting), [on-the-fly-nvs](https://github.com/graphdeco-inria/on-the-fly-nvs), [FastGS](https://github.com/fastgs/FastGS) and [SAMv2](https://github.com/facebookresearch/sam2). We sincerely thank the authors for open-sourcing their codebase. 
+
+### Funding Acknowledgement
+
+This work was supported by the ARC Research Hub in Intelligent Robotic Systems for Real-Time Asset Management (ARIAM) (IH210100030) and Abyss Solutions. C.J., N.S., and D.M. also acknowledge ongoing support from the QUT Centre for Robotics.
+
+
+
