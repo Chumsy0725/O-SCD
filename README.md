@@ -33,6 +33,10 @@ pip install -r requirements.txt
 
 I have incorporated the released codebase with [FastGS](https://github.com/fastgs/FastGS). This would give you slightly better and faster performance than reported. 
 
+## Data Preparation
+
+Download PASLCD (online) dataset from [HuggingFace](https://huggingface.co/datasets/ChamudithaJay/PASLCD/blob/main/PASLCD_online.zip) and unzip in to the `data` directory.
+
 ## Running Experiments
 
 To run the SCD experiments for all 20 instances, you can use the `run_oscd.sh` script
@@ -45,7 +49,7 @@ To run the Scene Update for all 20 instances, you can use the `run_update.sh` sc
 bash run_update.sh
 ```
 
-To initialize the viewer for any given scene (after running Scene Update/SCD), use the `run_viewer.sh` script
+To initialize the viewer for any given scene (after running Scene Update/SCD), use the `run_viewer.sh` script (will be released soon).
 ```shell
 bash run_viewer.sh "Scene" "Instance"
 ```
