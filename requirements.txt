@@ -1,0 +1,9 @@
+plyfile
+tqdm
+opencv-python
+lpips
+transformers==4.56.1
+torchmetrics
+submodules/diff-gaussian-rasterization_fastgs
+submodules/fused-ssim
+submodules/simple-knn
