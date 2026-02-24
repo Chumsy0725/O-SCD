@@ -42,7 +42,7 @@ bash run_oscd.sh
 
 To run the Scene Update for all 20 instances, you can use the `run_update.sh` script
 ```shell
-bash run_oscd.sh
+bash run_update.sh
 ```
 
 To initialize the viewer for any given scene (after running Scene Update/SCD), use the `run_viewer.sh` script
