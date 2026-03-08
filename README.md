@@ -49,7 +49,7 @@ To run the Scene Update for all 20 instances, you can use the `run_update.sh` sc
 bash run_update.sh
 ```
 
-To initialize the viewer for any given scene (after running Scene Update/SCD), use the `run_viewer.sh` script (will be released soon).
+To initialize the viewer for any given scene (after running Scene Update/SCD), use the `run_viewer.sh` script.
 ```shell
 bash run_viewer.sh "Scene" "Instance"
 ```
