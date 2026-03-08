@@ -406,14 +406,12 @@ def main(dataset: Namespace, opt : Namespace, pipe: Namespace, args: Namespace):
     pbar_selective_reconstruction.close()
     torch.cuda.synchronize()
 
-    print('#Gasussians befor pruning:', gaussians_rgb._xyz.shape[0])
     my_viewpoint_stack = viewpoints.copy()
     camlist = sampling_cameras(my_viewpoint_stack, n=len(viewpoints))
     score = compute_gaussian_score_fastgs_pixel_changed(camlist, gaussians_rgb, pipe, background, opt, mask_change = "eroded")
 
     prune_mask = score > 1
-    gaussians_rgb.prune_points(prune_mask)
-    print('#Gasussians after pruning:', gaussians_rgb._xyz.shape[0])    
+    gaussians_rgb.prune_points(prune_mask)   
 
     new_xyz = gaussians_change._xyz.detach().clone()
     new_features_dc = gaussians_change._features_dc.detach().clone()
@@ -426,8 +424,6 @@ def main(dataset: Namespace, opt : Namespace, pipe: Namespace, args: Namespace):
     torch.cuda.empty_cache()   
 
     gaussians_rgb.densification_postfix_fastgs(new_xyz, new_features_dc, new_features_rest, new_opacity, new_scaling, new_rotations, None)
-
-    print("#Gaussians after fusion:", gaussians_rgb._xyz.shape[0])
 
     del new_xyz, new_features_dc, new_features_rest, new_opacity, new_scaling, new_rotations
     torch.cuda.empty_cache()
@@ -503,19 +499,6 @@ def main(dataset: Namespace, opt : Namespace, pipe: Namespace, args: Namespace):
     
     with open(os.path.join(args.model_path, "cameras.json"), 'w') as f:
         json.dump(cameras_json, f, indent=4)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     # Set up command line argument parser
