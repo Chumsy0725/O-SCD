@@ -36,7 +36,7 @@
           <div class="column has-text-centered">
             <h1 class="title is-1 publication-title">
               <span class="gradient-text" style="font-size: 1em;">Changes in Real Time</span>: Online Scene Change
-              Detection with Multi-View Fusion 
+              Detection with Multi-View Fusion
             </h1>
             <div class="is-size-5 publication-authors">
               <span class="author-block">
@@ -66,14 +66,15 @@
 
             <!-- Uncomment and update when paper is accepted -->
             <div class="is-size-6 publication-authors">
-            <span class="gradient-text">CVPR 2026</span>
-          </div>
+              <span class="gradient-text">CVPR 2026</span>
+            </div>
 
             <div class="column has-text-centered">
               <div class="publication-links">
                 <!-- PDF Link. -->
                 <span class="link-block">
-                  <a href="https://github.com/Chumsy0725/O-SCD/blob/main/assets/paper.pdf" class="external-link button is-normal is-rounded is-dark">
+                  <a href="https://github.com/Chumsy0725/O-SCD/blob/main/assets/paper.pdf"
+                    class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fas fa-file-pdf"></i>
                     </span>
@@ -108,6 +109,64 @@
                   <span>Dataset</span>
                 </a>
               </span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Video Carousel Section -->
+  <section class="section pb-0"> <!-- Reduced padding-bottom so it flows into abstract seamlessly -->
+    <div class="container is-centered has-text-centered">
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <div style="display: inline-block; max-width: 100%; width: 100%;">
+            <!-- Video Carousel -->
+            <div id="video-carousel" style="position: relative; margin: 0 40px;">
+              <div class="swiper-container"
+                style="border-radius: 15px; overflow: visible; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 0;">
+                <div class="swiper-wrapper">
+                  <!-- Slide 1: Garden -->
+                  <div class="swiper-slide">
+                    <div style="background: white; padding: 1.5rem;">
+                      <h3 class="title is-5" style="margin-bottom: 1rem;">Garden</h3>
+                      <video class="carousel-video" muted playsinline
+                        style="width: 100%; height: auto; display: block; max-height: 600px;">
+                        <source src="./static/videos/garden.mp4" type="video/mp4">
+                      </video>
+                    </div>
+                  </div>
+
+                  <!-- Slide 2: Lounge -->
+                  <div class="swiper-slide">
+                    <div style="background: white; padding: 1.5rem;">
+                      <h3 class="title is-5" style="margin-bottom: 1rem;">Lounge</h3>
+                      <video class="carousel-video" muted playsinline
+                        style="width: 100%; height: auto; display: block; max-height: 600px;">
+                        <source src="./static/videos/lounge.webm" type="video/webm">
+                      </video>
+                    </div>
+                  </div>
+
+                  <!-- Slide 3: Meeting Room -->
+                  <div class="swiper-slide">
+                    <div style="background: white; padding: 1.5rem;">
+                      <h3 class="title is-5" style="margin-bottom: 1rem;">Meeting Room</h3>
+                      <video class="carousel-video" muted playsinline
+                        style="width: 100%; height: auto; display: block; max-height: 600px;">
+                        <source src="./static/videos/meeting_room.webm" type="video/webm">
+                      </video>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Navigation arrows -->
+                <div class="swiper-button-prev video-prev" style="color: #667eea; left: -10px;"></div>
+                <div class="swiper-button-next video-next" style="color: #667eea; right: -10px;"></div>
+
+                <!-- Pagination dots -->
+                <div class="swiper-pagination video-pagination"></div>
               </div>
             </div>
           </div>
@@ -300,6 +359,49 @@
           clickable: true,
         },
       });
+
+      const videoSwiper = new Swiper('#video-carousel .swiper-container', {
+        initialSlide: 1,
+        loop: true,
+        navigation: {
+          nextEl: '.video-next',
+          prevEl: '.video-prev',
+        },
+        pagination: {
+          el: '.video-pagination',
+          clickable: true,
+        },
+        on: {
+          init: function () {
+            playCurrentVideo(this);
+          },
+          slideChangeTransitionEnd: function () {
+            playCurrentVideo(this);
+          },
+          slideChangeTransitionStart: function () {
+            pauseAllVideos(this);
+          }
+        }
+      });
+
+      function playCurrentVideo(swiper) {
+        const activeSlide = swiper.slides[swiper.activeIndex];
+        const video = activeSlide.querySelector('video');
+        if (video) {
+          video.currentTime = 0;
+          video.play().catch(function (e) { console.log("Play prevented:", e); });
+          video.onended = function () {
+            swiper.slideNext();
+          };
+        }
+      }
+
+      function pauseAllVideos(swiper) {
+        const videos = swiper.el.querySelectorAll('video');
+        for (let i = 0; i < videos.length; i++) {
+          videos[i].pause();
+        }
+      }
     });
   </script>
 
@@ -521,21 +623,6 @@
       </div>
     </div>
   </section>
-  <!-- Video Section (Optional - uncomment when video is available) -->
-  <!-- <section class="section">
-  <div class="container is-centered has-text-centered">
-    <div class="columns is-four-fifths is-centered">
-      <div class="column is-10">
-        <h2 class="title is-3">Video</h2>
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
-
 
   <!-- Change-Guided Efficient Gaussian Representation Update Section -->
   <section class="section" style="background-color: #f8f9fa; padding: 3rem 0;">
