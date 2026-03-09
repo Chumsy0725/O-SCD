@@ -362,7 +362,7 @@
 
       const videoSwiper = new Swiper('#video-carousel .swiper-container', {
         initialSlide: 1,
-        loop: true,
+        loop: false,
         navigation: {
           nextEl: '.video-next',
           prevEl: '.video-prev',
@@ -389,9 +389,10 @@
         const video = activeSlide.querySelector('video');
         if (video) {
           video.currentTime = 0;
+          video.loop = false;
           video.play().catch(function (e) { console.log("Play prevented:", e); });
           video.onended = function () {
-            swiper.slideNext();
+            swiper.slideTo(1);
           };
         }
       }
