@@ -15,8 +15,8 @@ INSTANCE="$2"
 PORT="${3:-8080}"
 
 # Base paths based on the project structure
-DATA_DIR="/home/chamuditha/Desktop/CVPR26/OSCD/data/PASLCD"
-OUTPUT_DIR="/home/chamuditha/Desktop/CVPR26/OSCD/output"
+DATA_DIR="data"
+OUTPUT_DIR="output"
 
 # Construct paths
 SOURCE_PATH="${DATA_DIR}/Instance_${INSTANCE}/${SCENE}"
