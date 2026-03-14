@@ -2,7 +2,7 @@
 
 # Activate conda environment
 source $(conda info --base)/etc/profile.d/conda.sh
-conda activate FOSCD
+conda activate oscd
 
 # Define instances and classes
 INSTANCES=("Instance_1" "Instance_2")
