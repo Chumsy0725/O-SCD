@@ -203,7 +203,7 @@ def main(dataset: Namespace, opt : Namespace, pipe: Namespace, args: Namespace):
             view.candidate_map = candidate_map.detach().clone()
             viewpoints.append(view)
 
-
+        # if accuracy is your priority, it is recommended to have ~32 iterations 
         for iteration in range(16):
             total_iterations += 1
             if np.random.rand() > 0.33:
