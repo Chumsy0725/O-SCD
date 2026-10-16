@@ -24,20 +24,20 @@ This repository hosts the O-SCD line of work on online scene change detection. E
 ## News
 
 - **2026**: O-SCD is accepted to **CVPR 2026** as a **Highlight**.
-- **Coming soon**: O-SCD++ paper and code.
+- **2026**: O-SCD++ preprint and code released.
 
 ## Methods
 
 | Method | Paper | Venue | Links | Code |
 |---|---|---|---|---|
 | **O-SCD** | Changes in Real Time: Online Scene Change Detection with Multi-View Fusion | CVPR 2026 (Highlight) | [Project page](https://chumsy0725.github.io/O-SCD/) · [Paper](https://openaccess.thecvf.com/content/CVPR2026/html/Galappaththige_Changes_in_Real_Time_Online_Scene_Change_Detection_with_Multi-View_CVPR_2026_paper.html) · [arXiv](https://arxiv.org/abs/2511.12370) | [`O-SCD/`](O-SCD) |
-| **O-SCD++** | Coming soon | – | [Project page](https://chumsy0725.github.io/O-SCD/plusplus/) | [`O-SCD++/`](O-SCD%2B%2B) |
+| **O-SCD++** | O-SCD++: Replay-Free Online Scene Change Detection via Recursive Evidence Fusion | Preprint 2026 | [Project page](https://chumsy0725.github.io/O-SCD/plusplus/) | [`O-SCD++/`](O-SCD%2B%2B) |
 
 ## Repository layout
 
 ```
 O-SCD/       CVPR 2026 code
-O-SCD++/     coming soon
+O-SCD++/     O-SCD++ code
 docs/        project website
 ```
 

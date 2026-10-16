@@ -3,14 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>O-SCD++ · Coming soon</title>
-  <meta name="description" content="O-SCD++, the next step in the O-SCD line of online scene change detection. Paper and code coming soon.">
+  <title>O-SCD++ · Replay-Free Online Scene Change Detection</title>
+  <meta name="description" content="O-SCD++ replaces the replayed optimization of O-SCD with an exact two-scalar recursion per Gaussian: more accurate (0.575 vs 0.489 mIoU on PASLCD) and 2.2x faster (25.6 FPS), with a label-free decision threshold and per-pixel decision margins.">
+  <meta name="keywords" content="Online Scene Change Detection, Replay-free, Recursive Evidence Fusion, 3D Gaussian Splatting, Label-free, Selective Prediction, PASLCD">
   <link rel="canonical" href="https://chumsy0725.github.io/O-SCD/plusplus/">
   <meta name="theme-color" content="#d62728">
+
   <meta property="og:type" content="website">
-  <meta property="og:title" content="O-SCD++ · Coming soon">
-  <meta property="og:description" content="The next step in the O-SCD line of online scene change detection.">
+  <meta property="og:site_name" content="O-SCD">
+  <meta property="og:title" content="O-SCD++: Replay-Free Online Scene Change Detection via Recursive Evidence Fusion">
+  <meta property="og:description" content="Exact, replay-free multi-view fusion: 0.575 mIoU at 25.6 FPS on PASLCD, above O-SCD's offline result while remaining strictly causal.">
   <meta property="og:url" content="https://chumsy0725.github.io/O-SCD/plusplus/">
+  <meta property="og:image" content="https://chumsy0725.github.io/O-SCD/static/images/og-oscdpp.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta name="citation_title" content="O-SCD++: Replay-Free Online Scene Change Detection via Recursive Evidence Fusion">
+  <meta name="citation_author" content="Galappaththige, Chamuditha Jayanga">
+  <meta name="citation_author" content="Lai, Jason">
+  <meta name="citation_author" content="Windrim, Lloyd">
+  <meta name="citation_author" content="Patten, Timothy">
+  <meta name="citation_author" content="Dansereau, Donald">
+  <meta name="citation_author" content="Suenderhauf, Niko">
+  <meta name="citation_author" content="Miller, Dimity">
+  <meta name="citation_publication_date" content="2026">
+  <!-- At release: add citation_arxiv_id and citation_pdf_url. -->
 
   <link rel="icon" href="../static/icons/oscdpp.svg" type="image/svg+xml">
   <link rel="icon" href="../static/icons/oscdpp-32.png" sizes="32x32" type="image/png">
@@ -28,12 +46,20 @@
 
 <body data-paper="oscdpp">
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-paper" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></symbol>
+    <symbol id="i-arxiv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
     <symbol id="i-github" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
     <symbol id="i-data" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></symbol>
-    <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></symbol>
+    <symbol id="i-bib" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1M16 21h1a2 2 0 0 0 2-2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
     <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4h4v16H7zM13 4h4v16h-4z"/></symbol>
   </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="series-bar">
     <div class="wrap">
@@ -42,7 +68,7 @@
       </a>
       <nav class="series-nav" aria-label="Papers in the O-SCD series">
         <a href="../"><i class="dot oscd"></i>O-SCD <small>CVPR&nbsp;'26</small></a>
-        <a href="./" aria-current="page"><i class="dot oscdpp"></i>O-SCD++ <small>soon</small></a>
+        <a href="./" aria-current="page"><i class="dot oscdpp"></i>O-SCD++ <small>preprint</small></a>
       </nav>
       <div class="series-tools">
         <a class="icon-btn" href="https://github.com/Chumsy0725/O-SCD" aria-label="GitHub repository"><svg><use href="#i-github"/></svg></a>
@@ -51,17 +77,525 @@
     </div>
   </header>
 
-  <main class="soon">
-    <div class="wrap">
-      <img class="mark" src="../static/icons/oscdpp.svg" alt="" width="72" height="72">
-      <h1>O-SCD<span>++</span></h1>
-      <p>The next step in the O-SCD line of online scene change detection. Paper, code and project page are coming soon.</p>
-      <div class="links">
-        <a class="btn" href="../"><svg><use href="#i-back"/></svg>O-SCD (CVPR 2026)</a>
-        <a class="btn ghost" href="https://huggingface.co/datasets/ChamudithaJay/PASLCD"><svg><use href="#i-data"/></svg>PASLCD Dataset</a>
-        <a class="btn ghost" href="https://github.com/Chumsy0725/O-SCD"><svg><use href="#i-github"/></svg>GitHub</a>
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <span class="venue">Preprint <i class="sep"></i> 2026</span>
+        <h1><span class="lead">O-SCD++</span>: Replay-Free Online Scene Change Detection via Recursive Evidence Fusion</h1>
+        <div class="authors">
+          <span class="list">
+            <span class="name">Chamuditha Jayanga<sup>1,2</sup></span>
+            <span class="name">Jason Lai<sup>3</sup></span>
+            <span class="name">Lloyd Windrim<sup>2,4</sup></span>
+            <span class="name">Timothy Patten<sup>2,4</sup></span>
+            <span class="name">Donald Dansereau<sup>2,3</sup></span>
+            <span class="name">Niko Suenderhauf<sup>1,2</sup></span>
+            <span class="name">Dimity Miller<sup>1,2</sup></span>
+          </span>
+        </div>
+        <div class="affils">
+          <span><sup>1</sup>QUT Centre for Robotics</span>
+          <span><sup>2</sup>ARIAM Hub</span>
+          <span><sup>3</sup>ACFR, University of Sydney</span>
+          <span><sup>4</sup>Abyss Solutions</span>
+        </div>
+        <div class="links">
+          <!-- At release: point at the arXiv abstract and drop aria-disabled. -->
+          <a class="btn" href="#" aria-disabled="true"><svg><use href="#i-arxiv"/></svg>arXiv <span class="tag">soon</span></a>
+          <!-- At release: link https://github.com/Chumsy0725/O-SCD/tree/main/O-SCD%2B%2B and drop aria-disabled. -->
+          <a class="btn" href="#" aria-disabled="true"><svg><use href="#i-github"/></svg>Code <span class="tag">coming soon</span></a>
+          <a class="btn" href="https://huggingface.co/datasets/ChamudithaJay/PASLCD"><svg><use href="#i-data"/></svg>PASLCD Dataset</a>
+          <a class="btn ghost" href="../"><svg><use href="#i-paper"/></svg>O-SCD (CVPR 2026)</a>
+          <a class="btn ghost" href="#bibtex"><svg><use href="#i-bib"/></svg>BibTeX</a>
+        </div>
+        <p class="tldr"><b>TL;DR</b>O-SCD++ folds each new view into the map in a single pass, with no replay of past frames and no iterative optimization. It is 18% more accurate (mIoU) <em>and</em> 2.2&times; faster than O-SCD (over 25 FPS), and it sets its own decision threshold without labels, with a per-pixel confidence.</p>
       </div>
-    </div>
+    </section>
+
+    <section class="section" style="padding-top: 8px" aria-label="Videos">
+      <div class="wrap">
+        <div class="card" data-tabs data-video-stage>
+          <div class="tabs" role="tablist" aria-label="Video scene" style="margin: 14px 0 12px">
+            <button role="tab" id="vt-playground" aria-controls="vp-playground" aria-selected="true">Playground</button>
+            <button role="tab" id="vt-lunch_room" aria-controls="vp-lunch_room" aria-selected="false" tabindex="-1">Lunch room</button>
+          </div>
+          <div class="video-stage auto">
+            <div role="tabpanel" id="vp-playground" aria-labelledby="vt-playground">
+              <video muted loop playsinline width="1280" height="664" preload="metadata" poster="../static/oscdpp/videos/playground_poster.jpg" data-src="../static/oscdpp/videos/playground.mp4" aria-label="O-SCD++ fly-through, Playground: pre-change, post-change, change prediction and decision margin"></video>
+              <div class="quad" aria-hidden="true"><span class="chip">Pre-change (reference)</span><span class="chip">Post-change</span><span class="chip">O-SCD++ change</span><span class="chip">Decision margin</span></div>
+            </div>
+            <div role="tabpanel" id="vp-lunch_room" aria-labelledby="vt-lunch_room" hidden>
+              <video muted loop playsinline width="1280" height="664" preload="none" poster="../static/oscdpp/videos/lunch_room_poster.jpg" data-src="../static/oscdpp/videos/lunch_room.mp4" aria-label="O-SCD++ fly-through, Lunch room: pre-change, post-change, change prediction and decision margin"></video>
+              <div class="quad" aria-hidden="true"><span class="chip">Pre-change (reference)</span><span class="chip">Post-change</span><span class="chip">O-SCD++ change</span><span class="chip">Decision margin</span></div>
+            </div>
+            <button class="video-ctrl" type="button" aria-pressed="false" aria-label="Play or pause video"><svg class="pause"><use href="#i-pause"/></svg><svg class="play"><use href="#i-play"/></svg><span>Play / pause</span></button>
+          </div>
+          <div class="media-caption">Fly-throughs of O-SCD++ results on PASLCD. Top: the pre-change reference map and the post-change scene, rendered from the updated map along a smooth path through the inference poses. Bottom: the O-SCD++ change prediction (highlighted) and its decision margin (bright = low confidence).</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="teaser">
+      <div class="wrap">
+        <figure class="fig prose" style="max-width: 880px">
+          <div class="card" style="padding: 16px 18px 8px">
+            <div class="chart-legend" aria-hidden="true">
+              <span><i style="background: var(--oscd); border-radius: 2px"></i>O-SCD (iterations per frame)</span>
+              <span><i style="background: var(--oscdpp)"></i>O-SCD++ (replay-free)</span>
+              <span style="color: var(--oscd)"><i class="dash"></i><span style="color: var(--ink-2)">O-SCD offline</span></span>
+            </div>
+            <div class="chart" data-chart>
+              <script type="application/json">
+              {
+                "aria": "Mean IoU against frames per second on PASLCD. O-SCD traces a trade-off from 0.518 mIoU at 2.9 FPS (128 iterations per frame) to 0.459 at 22.4 FPS (2 iterations). O-SCD++ reaches 0.575 mIoU at 25.6 FPS, above O-SCD offline (0.556).",
+                "x": { "min": 0, "max": 28, "ticks": [0, 5, 10, 15, 20, 25], "title": "Frames per second (FPS)" },
+                "y": { "min": 0.44, "max": 0.59, "ticks": [0.45, 0.47, 0.49, 0.51, 0.53, 0.55, 0.57, 0.59], "title": "mIoU", "digits": 2 },
+                "refs": [ { "y": 0.556, "label": "O-SCD offline · 0.556", "color": "oscd" } ],
+                "lines": [ { "series": "oscd", "color": "oscd" } ],
+                "marks": [
+                  { "series": "oscd", "x": 2.9, "y": 0.518, "name": "O-SCD, 128 iterations/frame", "tip": "2.9 FPS · mIoU 0.518", "color": "oscd", "shape": "square", "size": 5, "label": "128", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
+                  { "series": "oscd", "x": 4.84, "y": 0.5064, "name": "O-SCD, 64 iterations/frame", "tip": "4.8 FPS · mIoU 0.506", "color": "oscd", "shape": "square", "size": 5, "label": "64", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
+                  { "series": "oscd", "x": 8.39, "y": 0.4907, "name": "O-SCD, 32 iterations/frame", "tip": "8.4 FPS · mIoU 0.491", "color": "oscd", "shape": "square", "size": 5, "label": "32", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
+                  { "series": "oscd", "x": 12.01, "y": 0.4866, "name": "O-SCD, 16 iterations/frame (default)", "tip": "12.0 FPS · mIoU 0.487", "color": "oscd", "shape": "square", "size": 5, "label": "16 (default)", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
+                  { "series": "oscd", "x": 15.88, "y": 0.4808, "name": "O-SCD, 8 iterations/frame", "tip": "15.9 FPS · mIoU 0.481", "color": "oscd", "shape": "square", "size": 5, "label": "8", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
+                  { "series": "oscd", "x": 19.79, "y": 0.4763, "name": "O-SCD, 4 iterations/frame", "tip": "19.8 FPS · mIoU 0.476", "color": "oscd", "shape": "square", "size": 5, "label": "4", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
+                  { "series": "oscd", "x": 22.40, "y": 0.4586, "name": "O-SCD, 2 iterations/frame", "tip": "22.4 FPS · mIoU 0.459", "color": "oscd", "shape": "square", "size": 5, "label": "2", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
+                  { "x": 25.6, "y": 0.575, "name": "O-SCD++ (replay-free)", "tip": "25.6 FPS · mIoU 0.575", "color": "oscdpp", "shape": "star", "size": 7, "label": "O-SCD++", "strong": true, "anchor": "end", "dx": -18, "dy": 5 }
+                ]
+              }
+              </script>
+            </div>
+          </div>
+          <figcaption><b>Figure 1.</b> O-SCD fuses multi-view evidence by iterative optimization over replayed cue maps, which trades detection quality against speed (blue, labelled with the per-frame iteration budget). The replay-free formulation of O-SCD++ (red) removes this trade-off: it is simultaneously more accurate and more than twice as fast, and surpasses even O-SCD's offline result while remaining strictly causal.</figcaption>
+        </figure>
+
+        <div class="stats">
+          <div class="stat accent"><div class="v">0.575<small>mIoU</small></div><div class="k">Online on PASLCD, up from 0.489 and above O-SCD offline (0.556)</div></div>
+          <div class="stat"><div class="v">25.6<small>FPS</small></div><div class="k">2.2&times; the throughput of O-SCD (11.8 FPS)</div></div>
+          <div class="stat"><div class="v">2.1<small>ms</small></div><div class="k">Multi-view fusion per frame, down from 47.8 ms</div></div>
+          <div class="stat"><div class="v">0<small>labels</small></div><div class="k">Exact label-free threshold, plus a per-pixel decision margin</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="abstract">
+      <div class="wrap prose abstract">
+        <span class="eyebrow">Abstract</span>
+        <h2>Removing the accuracy–speed trade-off</h2>
+        <p>Online scene change detection requires an agent to detect what has changed in a previously mapped environment while it is still on site, observing from unconstrained viewpoints and without access to future observations. This causal setting is strictly harder than its offline counterpart, and online methods have consistently trailed offline accuracy. O-SCD closed that gap by treating change as a persistent property of a 3D Gaussian splatting map of the reference scene, surpassing the strongest offline methods in change detection accuracy while operating at over 10 frames per second. O-SCD optimizes a change field over the Gaussians of the reference map, refitting it to all past cue maps at every frame, a step that consumes more than half of the per-frame budget and forces accuracy to be traded against speed.</p>
+        <p>We present a <strong>replay-free formulation</strong> that eliminates this trade-off. Because the reference map stays fixed, rendering the change field is a linear operation. Each new observation can therefore be carried onto the map's Gaussians directly, by <strong>a single backward pass of the renderer</strong>, which reduces multi-view fusion to an <strong>exact two-scalar recursion per Gaussian</strong>. Past observations are never stored or revisited. The self-supervised objective that O-SCD minimizes by descent also determines the decision threshold exactly, by sorting, yielding a <strong>label-free per-frame cutoff</strong> whose margin provides a selective-prediction signal. On PASLCD, our method improves mean intersection over union from 0.489 to 0.575 and throughput from 11.8 to 25.6 frames per second, even exceeding O-SCD's offline result while remaining strictly causal.</p>
+      </div>
+    </section>
+
+    <section class="section tint" id="method">
+      <div class="wrap">
+        <span class="eyebrow">Method</span>
+        <h2>Every iterative step becomes a direct computation</h2>
+        <p class="lede">O-SCD++ keeps the front end of O-SCD (pose estimation against the reference map and change-cue extraction) and replaces its change stage.</p>
+        <figure class="fig">
+          <div class="paper">
+            <a class="zoom" href="../static/oscdpp/images/overview.jpg" aria-label="Open the full-resolution overview figure">
+              <img src="../static/oscdpp/images/overview.jpg" width="2451" height="865" loading="lazy" alt="O-SCD++ overview. Front end adopted from O-SCD: pose estimation and reference rendering produce a change cue. Replay-free change stage: rendering-adjoint transfer (one backward pass), per-primitive state updated by exact recursion, current-view prediction, and an exact label-free decision by sort and scan, giving a binary change mask and a decision margin. The iterative change stage of O-SCD is shown dashed.">
+            </a>
+          </div>
+          <span class="zoom-hint">Click to open full resolution · equation, section and proposition numbers refer to the paper</span>
+          <figcaption><b>Figure 2.</b> Overview of O-SCD++ for one inference frame. The front end, adopted from O-SCD, registers the inference image against the reference map and computes a change cue. The replay-free change stage transfers the cue onto the reference primitives with one rasterizer backward pass, folds it into a two-scalar state per primitive by an exact recursion, predicts a score for the current view from the updated state and the current cue, and binarizes it with the exact minimizer of a label-free objective, which also yields a per-pixel decision margin. It eliminates the replay-based optimization of O-SCD (dashed).</figcaption>
+        </figure>
+
+        <div class="card" style="padding: clamp(14px, 2.4vw, 24px); margin-top: 36px">
+          <div class="versus" aria-label="The three steps of the change stage in O-SCD and O-SCD++">
+            <div class="spacer"></div>
+            <div class="head old">O-SCD (iterative)</div>
+            <div class="spacer"></div>
+            <div class="head new">O-SCD++ (direct)</div>
+
+            <div class="step">(i)<small>Transfer</small></div>
+            <div class="box old">Gradient steps on the self-supervised loss, backpropagated through the rasterizer</div>
+            <div class="arrow" aria-hidden="true"><svg><use href="#i-arrow"/></svg></div>
+            <div class="box new">One rasterizer backward pass applies the rendering adjoint A<sup>&#8868;</sup></div>
+
+            <div class="step">(ii)<small>Combine</small></div>
+            <div class="box old">Replay: <i>n</i>&nbsp;=&nbsp;16 steps per frame on stored cue maps <i>c</i><sub>1</sub>, …, <i>c</i><sub><i>t</i></sub></div>
+            <div class="arrow" aria-hidden="true"><svg><use href="#i-arrow"/></svg></div>
+            <div class="box new">Exact recursion on two scalars (<i>q</i><sub><i>g</i></sub>, <i>W</i><sub><i>g</i></sub>) per Gaussian</div>
+
+            <div class="step">(iii)<small>Decide</small></div>
+            <div class="box old">Fixed cutoff 0.5; no decision confidence</div>
+            <div class="arrow" aria-hidden="true"><svg><use href="#i-arrow"/></svg></div>
+            <div class="box new">Exact minimizer of the loss by sort and scan, with a per-pixel margin <i>&mu;</i><sub><i>t</i></sub></div>
+
+            <div class="gap"></div>
+
+            <div class="step">Cost<small>per frame</small></div>
+            <div class="box old" style="font-size: 14px"><i>n</i>(<i>T</i><sub>rast</sub> + <i>T</i><sub>adj</sub>) + <i>T</i><sub>rast</sub><br>memory <i>O</i>(<i>G</i> + <i>tN</i>)</div>
+            <div class="arrow" aria-hidden="true"><svg><use href="#i-arrow"/></svg></div>
+            <div class="box new" style="font-size: 14px">2<i>T</i><sub>rast</sub> + <i>T</i><sub>adj</sub> + <i>O</i>(<i>N</i> log <i>N</i>)<br>memory <i>O</i>(<i>G</i>)</div>
+
+            <div class="step">PASLCD<small>online</small></div>
+            <div class="box old"><span class="num">0.489</span> mIoU · <span class="num">11.8</span> FPS</div>
+            <div class="arrow" aria-hidden="true"><svg><use href="#i-arrow"/></svg></div>
+            <div class="box new"><span class="num">0.575</span> mIoU · <span class="num">25.6</span> FPS</div>
+          </div>
+        </div>
+        <p class="table-note">The per-frame cost loses its iteration budget <i>n</i> and its dependence on the number <i>t</i> of frames processed. <i>G</i>: primitives; <i>N</i>: pixels.</p>
+
+        <div class="cards" style="margin-top: 28px">
+          <div class="pcard"><span class="meta">Exactness</span><span class="t">Order-invariant</span><span class="d">The state reached after a sequence does not depend on the order in which the frames arrive.</span></div>
+          <div class="pcard"><span class="meta">Exactness</span><span class="t">Retrospective re-inference</span><span class="d">Re-applied to every frame, the final state improves on the online masks without any refinement.</span></div>
+          <div class="pcard"><span class="meta">Exactness</span><span class="t">Decision margins</span><span class="d">The exact decision yields a per-pixel margin: to our knowledge the first confidence signal from a label-free online SCD method.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="qualitative">
+      <div class="wrap">
+        <span class="eyebrow">Qualitative results</span>
+        <h2>O-SCD vs. O-SCD++</h2>
+        <p class="lede">Drag the slider to compare the change masks of O-SCD (left) and O-SCD++ (right), drawn over the post-change image.</p>
+        <div data-tabs>
+            <div class="tabs" role="tablist" aria-label="Qualitative scene">
+              <button role="tab" id="qt-porch" aria-controls="qp-porch" aria-selected="true">Porch</button>
+              <button role="tab" id="qt-zen" aria-controls="qp-zen" aria-selected="false" tabindex="-1">Zen</button>
+              <button role="tab" id="qt-garden" aria-controls="qp-garden" aria-selected="false" tabindex="-1">Garden</button>
+              <button role="tab" id="qt-lounge" aria-controls="qp-lounge" aria-selected="false" tabindex="-1">Lounge</button>
+              <button role="tab" id="qt-meeting_room" aria-controls="qp-meeting_room" aria-selected="false" tabindex="-1">Meeting room</button>
+              <button role="tab" id="qt-lunch_room" aria-controls="qp-lunch_room" aria-selected="false" tabindex="-1">Lunch room</button>
+            </div>
+          <div class="legend" aria-label="Mask colour key">
+            <span><i style="background:#fff"></i>True positive</span>
+            <span><i style="background:#e8352b"></i>False negative</span>
+            <span><i style="background:#c86ed7"></i>False positive</span>
+            <span><i style="background:#3a3a3a"></i>True negative (dimmed)</span>
+          </div>
+          <figure class="fig prose" style="max-width: 960px">
+            <div>
+            <div role="tabpanel" id="qp-porch" aria-labelledby="qt-porch">
+              <div class="compare-grid">
+                <div class="cell"><span class="chip">Pre-change (rendered)</span><img src="../static/oscdpp/images/qual/porch_ref.jpg" width="1008" height="567" loading="lazy" alt="Porch: reference map rendered at the estimated pose"></div>
+                <div class="cell"><span class="chip">Post-change</span><img src="../static/oscdpp/images/qual/porch_inf.jpg" width="1008" height="567" loading="lazy" alt="Porch: post-change inference image"></div>
+              </div>
+              <div class="compare" style="margin-top: 10px">
+                <img src="../static/oscdpp/images/qual/porch_oscd_ov.jpg" width="1008" height="567" loading="lazy" alt="Porch: O-SCD change mask, IoU 0.486, F1 0.654">
+                <div class="after"><img src="../static/oscdpp/images/qual/porch_ours_ov.jpg" width="1008" height="567" loading="lazy" alt="Porch: O-SCD++ change mask, IoU 0.815, F1 0.898"></div>
+                <div class="handle"></div>
+                <span class="chip"><i class="sw" style="background: var(--oscd)"></i>O-SCD</span>
+                <span class="chip right"><i class="sw" style="background: var(--oscdpp)"></i>O-SCD++</span>
+                <span class="chip metric">IoU 0.486 · F1 0.654</span>
+                <span class="chip metric right">IoU 0.815 · F1 0.898</span>
+                <input type="range" min="0" max="100" value="50" aria-label="Drag to compare O-SCD (left) with O-SCD++ (right) in Porch">
+              </div>
+            </div>
+            <div role="tabpanel" id="qp-zen" aria-labelledby="qt-zen" hidden>
+              <div class="compare-grid">
+                <div class="cell"><span class="chip">Pre-change (rendered)</span><img src="../static/oscdpp/images/qual/zen_ref.jpg" width="1008" height="567" loading="lazy" alt="Zen: reference map rendered at the estimated pose"></div>
+                <div class="cell"><span class="chip">Post-change</span><img src="../static/oscdpp/images/qual/zen_inf.jpg" width="1008" height="567" loading="lazy" alt="Zen: post-change inference image"></div>
+              </div>
+              <div class="compare" style="margin-top: 10px">
+                <img src="../static/oscdpp/images/qual/zen_oscd_ov.jpg" width="1008" height="567" loading="lazy" alt="Zen: O-SCD change mask, IoU 0.440, F1 0.611">
+                <div class="after"><img src="../static/oscdpp/images/qual/zen_ours_ov.jpg" width="1008" height="567" loading="lazy" alt="Zen: O-SCD++ change mask, IoU 0.764, F1 0.866"></div>
+                <div class="handle"></div>
+                <span class="chip"><i class="sw" style="background: var(--oscd)"></i>O-SCD</span>
+                <span class="chip right"><i class="sw" style="background: var(--oscdpp)"></i>O-SCD++</span>
+                <span class="chip metric">IoU 0.440 · F1 0.611</span>
+                <span class="chip metric right">IoU 0.764 · F1 0.866</span>
+                <input type="range" min="0" max="100" value="50" aria-label="Drag to compare O-SCD (left) with O-SCD++ (right) in Zen">
+              </div>
+            </div>
+            <div role="tabpanel" id="qp-garden" aria-labelledby="qt-garden" hidden>
+              <div class="compare-grid">
+                <div class="cell"><span class="chip">Pre-change (rendered)</span><img src="../static/oscdpp/images/qual/garden_ref.jpg" width="1008" height="567" loading="lazy" alt="Garden: reference map rendered at the estimated pose"></div>
+                <div class="cell"><span class="chip">Post-change</span><img src="../static/oscdpp/images/qual/garden_inf.jpg" width="1008" height="567" loading="lazy" alt="Garden: post-change inference image"></div>
+              </div>
+              <div class="compare" style="margin-top: 10px">
+                <img src="../static/oscdpp/images/qual/garden_oscd_ov.jpg" width="1008" height="567" loading="lazy" alt="Garden: O-SCD change mask, IoU 0.472, F1 0.641">
+                <div class="after"><img src="../static/oscdpp/images/qual/garden_ours_ov.jpg" width="1008" height="567" loading="lazy" alt="Garden: O-SCD++ change mask, IoU 0.739, F1 0.850"></div>
+                <div class="handle"></div>
+                <span class="chip"><i class="sw" style="background: var(--oscd)"></i>O-SCD</span>
+                <span class="chip right"><i class="sw" style="background: var(--oscdpp)"></i>O-SCD++</span>
+                <span class="chip metric">IoU 0.472 · F1 0.641</span>
+                <span class="chip metric right">IoU 0.739 · F1 0.850</span>
+                <input type="range" min="0" max="100" value="50" aria-label="Drag to compare O-SCD (left) with O-SCD++ (right) in Garden">
+              </div>
+            </div>
+            <div role="tabpanel" id="qp-lounge" aria-labelledby="qt-lounge" hidden>
+              <div class="compare-grid">
+                <div class="cell"><span class="chip">Pre-change (rendered)</span><img src="../static/oscdpp/images/qual/lounge_ref.jpg" width="1008" height="567" loading="lazy" alt="Lounge: reference map rendered at the estimated pose"></div>
+                <div class="cell"><span class="chip">Post-change</span><img src="../static/oscdpp/images/qual/lounge_inf.jpg" width="1008" height="567" loading="lazy" alt="Lounge: post-change inference image"></div>
+              </div>
+              <div class="compare" style="margin-top: 10px">
+                <img src="../static/oscdpp/images/qual/lounge_oscd_ov.jpg" width="1008" height="567" loading="lazy" alt="Lounge: O-SCD change mask, IoU 0.478, F1 0.647">
+                <div class="after"><img src="../static/oscdpp/images/qual/lounge_ours_ov.jpg" width="1008" height="567" loading="lazy" alt="Lounge: O-SCD++ change mask, IoU 0.744, F1 0.853"></div>
+                <div class="handle"></div>
+                <span class="chip"><i class="sw" style="background: var(--oscd)"></i>O-SCD</span>
+                <span class="chip right"><i class="sw" style="background: var(--oscdpp)"></i>O-SCD++</span>
+                <span class="chip metric">IoU 0.478 · F1 0.647</span>
+                <span class="chip metric right">IoU 0.744 · F1 0.853</span>
+                <input type="range" min="0" max="100" value="50" aria-label="Drag to compare O-SCD (left) with O-SCD++ (right) in Lounge">
+              </div>
+            </div>
+            <div role="tabpanel" id="qp-meeting_room" aria-labelledby="qt-meeting_room" hidden>
+              <div class="compare-grid">
+                <div class="cell"><span class="chip">Pre-change (rendered)</span><img src="../static/oscdpp/images/qual/meeting_room_ref.jpg" width="1008" height="567" loading="lazy" alt="Meeting room: reference map rendered at the estimated pose"></div>
+                <div class="cell"><span class="chip">Post-change</span><img src="../static/oscdpp/images/qual/meeting_room_inf.jpg" width="1008" height="567" loading="lazy" alt="Meeting room: post-change inference image"></div>
+              </div>
+              <div class="compare" style="margin-top: 10px">
+                <img src="../static/oscdpp/images/qual/meeting_room_oscd_ov.jpg" width="1008" height="567" loading="lazy" alt="Meeting room: O-SCD change mask, IoU 0.532, F1 0.695">
+                <div class="after"><img src="../static/oscdpp/images/qual/meeting_room_ours_ov.jpg" width="1008" height="567" loading="lazy" alt="Meeting room: O-SCD++ change mask, IoU 0.710, F1 0.831"></div>
+                <div class="handle"></div>
+                <span class="chip"><i class="sw" style="background: var(--oscd)"></i>O-SCD</span>
+                <span class="chip right"><i class="sw" style="background: var(--oscdpp)"></i>O-SCD++</span>
+                <span class="chip metric">IoU 0.532 · F1 0.695</span>
+                <span class="chip metric right">IoU 0.710 · F1 0.831</span>
+                <input type="range" min="0" max="100" value="50" aria-label="Drag to compare O-SCD (left) with O-SCD++ (right) in Meeting room">
+              </div>
+            </div>
+            <div role="tabpanel" id="qp-lunch_room" aria-labelledby="qt-lunch_room" hidden>
+              <div class="compare-grid">
+                <div class="cell"><span class="chip">Pre-change (rendered)</span><img src="../static/oscdpp/images/qual/lunch_room_ref.jpg" width="1008" height="567" loading="lazy" alt="Lunch room: reference map rendered at the estimated pose"></div>
+                <div class="cell"><span class="chip">Post-change</span><img src="../static/oscdpp/images/qual/lunch_room_inf.jpg" width="1008" height="567" loading="lazy" alt="Lunch room: post-change inference image"></div>
+              </div>
+              <div class="compare" style="margin-top: 10px">
+                <img src="../static/oscdpp/images/qual/lunch_room_oscd_ov.jpg" width="1008" height="567" loading="lazy" alt="Lunch room: O-SCD change mask, IoU 0.485, F1 0.653">
+                <div class="after"><img src="../static/oscdpp/images/qual/lunch_room_ours_ov.jpg" width="1008" height="567" loading="lazy" alt="Lunch room: O-SCD++ change mask, IoU 0.662, F1 0.796"></div>
+                <div class="handle"></div>
+                <span class="chip"><i class="sw" style="background: var(--oscd)"></i>O-SCD</span>
+                <span class="chip right"><i class="sw" style="background: var(--oscdpp)"></i>O-SCD++</span>
+                <span class="chip metric">IoU 0.485 · F1 0.653</span>
+                <span class="chip metric right">IoU 0.662 · F1 0.796</span>
+                <input type="range" min="0" max="100" value="50" aria-label="Drag to compare O-SCD (left) with O-SCD++ (right) in Lunch room">
+              </div>
+            </div>
+            </div>
+            <figcaption><b>Figure 3.</b> Qualitative comparison with O-SCD on PASLCD, colour-coded against the ground truth, with per-frame IoU and F1. O-SCD++ also recovers particularly challenging surface-level changes that barely contrast with their surroundings: a grey cross on a grey chair (Garden), a white laminated sheet on a white table (Meeting room), and a water spill and a transparent cup on a table (Lunch room).</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tint" id="results">
+      <div class="wrap">
+        <span class="eyebrow">Quantitative results</span>
+        <h2>State of the art in accuracy and throughput</h2>
+        <p class="lede"><b>LF</b>: label-free, <b>PA</b>: pose-agnostic, <b>MV</b>: multi-view. Best in <b>bold</b>, second <u>underlined</u>; rows in grey italics are shown for reference.</p>
+        <div class="table-wrap prose" style="max-width: 820px">
+          <table class="results">
+            <caption>PASLCD · online <small>Averaged over all 20 instances</small></caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">LF</th><th scope="col">PA</th><th scope="col">MV</th><th scope="col">mIoU ↑</th><th scope="col">F1 ↑</th><th scope="col">FPS ↑</th></tr></thead>
+            <tbody>
+              <tr class="ref"><td>O-SCD (offline)</td><td>✓</td><td>✓</td><td>✓</td><td>0.556</td><td>0.700</td><td>–</td></tr>
+              <tr class="divider"><td>ChangeSim (CS)</td><td class="no">–</td><td class="no">–</td><td class="no">–</td><td>0.018</td><td>0.034</td><td>11.5</td></tr>
+              <tr><td>CS+CYWS2D</td><td class="no">–</td><td class="no">–</td><td class="no">–</td><td>0.243</td><td>0.360</td><td>8.2</td></tr>
+              <tr><td>CS+GeSCF</td><td class="yes">✓</td><td class="no">–</td><td class="no">–</td><td>0.181</td><td>0.270</td><td>&lt;1</td></tr>
+              <tr><td>FastGeSCF</td><td class="no">–</td><td class="no">–</td><td class="no">–</td><td>0.122</td><td>0.198</td><td>1.43</td></tr>
+              <tr><td>SplatPose</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">–</td><td>0.173</td><td>0.281</td><td>&lt;1</td></tr>
+              <tr><td>SplatPose+</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">–</td><td>0.237</td><td>0.358</td><td>&lt;1</td></tr>
+              <tr><td>O-SCD</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="second">0.489</td><td class="second">0.643</td><td class="second">11.8</td></tr>
+              <tr class="ours"><td>O-SCD++</td><td>✓</td><td>✓</td><td>✓</td><td class="best">0.575</td><td class="best">0.715</td><td class="best">25.6</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="prose" style="max-width: 820px; margin-top: 20px; display: grid; gap: 20px">
+          <div class="table-wrap">
+            <table class="results">
+              <caption>PASLCD · offline <small>Offline methods use the complete post-change capture. O-SCD++ re-infers every frame from its final state (retrospective inference), with no further optimization.</small></caption>
+              <thead><tr><th scope="col">Method</th><th scope="col">LF</th><th scope="col">Setting</th><th scope="col">mIoU ↑</th><th scope="col">F1 ↑</th></tr></thead>
+              <tbody>
+                <tr><td>CYWS2D</td><td class="no">–</td><td>offline</td><td>0.273</td><td>0.398</td></tr>
+                <tr><td>VSCD</td><td class="no">–</td><td>offline</td><td>0.112</td><td>0.186</td></tr>
+                <tr><td>GeSCF</td><td class="yes">✓</td><td>offline</td><td>0.477</td><td>0.611</td></tr>
+                <tr><td>SplatPose+</td><td class="yes">✓</td><td>offline</td><td>0.237</td><td>0.358</td></tr>
+                <tr><td>SCAR-3D</td><td class="yes">✓</td><td>offline</td><td>0.191</td><td>0.289</td></tr>
+                <tr><td>3DGS-CD</td><td class="yes">✓</td><td>offline</td><td>0.209</td><td>0.339</td></tr>
+                <tr><td>MV3DCD</td><td class="yes">✓</td><td>offline</td><td>0.478</td><td>0.628</td></tr>
+                <tr><td>SceneDiff</td><td class="yes">✓</td><td>offline</td><td>0.473</td><td>0.609</td></tr>
+                <tr><td>O-SCD</td><td class="yes">✓</td><td>offline</td><td class="second">0.556</td><td class="second">0.700</td></tr>
+                <tr class="ours"><td>O-SCD++</td><td>✓</td><td>retrospective</td><td class="best">0.586</td><td class="best">0.726</td></tr>
+                <tr class="ref divider"><td>O-SCD++</td><td>✓</td><td>online</td><td>0.575</td><td>0.715</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table class="results">
+              <caption>CL-Splats and ChangeSim <small>Averaged over scenes</small></caption>
+              <thead>
+                <tr class="group"><th rowspan="2" scope="col" style="vertical-align: bottom">Method</th><th colspan="2" scope="colgroup" class="bl">CL-Splats</th><th colspan="2" scope="colgroup" class="bl">ChangeSim</th></tr>
+                <tr><th scope="col" class="bl">mIoU ↑</th><th scope="col">F1 ↑</th><th scope="col" class="bl">mIoU ↑</th><th scope="col">F1 ↑</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>ChangeSim (CS)</td><td class="bl">0.010</td><td>0.019</td><td class="bl">0.130</td><td>0.212</td></tr>
+                <tr><td>CS+CYWS2D</td><td class="bl">0.372</td><td>0.519</td><td class="bl">0.271</td><td>0.408</td></tr>
+                <tr><td>CS+GeSCF</td><td class="bl">0.520</td><td>0.630</td><td class="bl">0.348</td><td>0.484</td></tr>
+                <tr><td>FastGeSCF</td><td class="bl">0.183</td><td>0.252</td><td class="bl">0.315</td><td>0.458</td></tr>
+                <tr><td>SplatPose</td><td class="bl">0.224</td><td>0.320</td><td class="bl">0.061</td><td>0.108</td></tr>
+                <tr><td>SplatPose+</td><td class="bl">0.556</td><td>0.700</td><td class="bl">0.115</td><td>0.186</td></tr>
+                <tr><td>O-SCD</td><td class="bl second">0.657</td><td class="second">0.773</td><td class="bl second">0.404</td><td class="second">0.535</td></tr>
+                <tr class="ours"><td>O-SCD++</td><td class="bl best">0.703</td><td class="best">0.807</td><td class="bl best">0.474</td><td class="best">0.605</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table class="results">
+              <caption>Per-frame runtime <small>PASLCD, RTX 4090, about 1008&times;567 (scene-dependent)</small></caption>
+              <thead>
+                <tr class="group"><th rowspan="2" scope="col" style="vertical-align: bottom">Module</th><th colspan="2" scope="colgroup" class="bl">O-SCD</th><th colspan="2" scope="colgroup" class="bl">O-SCD++</th></tr>
+                <tr><th scope="col" class="bl">ms</th><th scope="col">%</th><th scope="col" class="bl">ms</th><th scope="col">%</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Pose estimation</strong></td><td class="bl">30.4</td><td>36.0</td><td class="bl">30.2</td><td>77</td></tr>
+                <tr class="divider"><td><strong>Change detection</strong></td><td class="bl">54.4</td><td>64.0</td><td class="bl best">9.0</td><td>23</td></tr>
+                <tr class="sub"><td>Change cue generation</td><td class="bl">6.1</td><td>7.2</td><td class="bl">5.9</td><td>15.0</td></tr>
+                <tr class="sub"><td>Multi-view fusion</td><td class="bl">47.8</td><td>56.5</td><td class="bl best">2.1</td><td>5.5</td></tr>
+                <tr class="sub"><td>Mask inference</td><td class="bl">0.5</td><td>0.3</td><td class="bl">1.0</td><td>2.5</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="table-note">Even online, O-SCD++ exceeds every offline method. Replay-free fusion is about 20&times; faster than O-SCD's, so change detection is no longer the bottleneck. All numbers on this page are from the O-SCD++ paper.</p>
+      </div>
+    </section>
+
+    <section class="section" id="margins">
+      <div class="wrap">
+        <span class="eyebrow">Selective prediction</span>
+        <h2>Decision margins: knowing where it might be wrong</h2>
+        <p class="lede">The margin is small (bright) where a slightly different threshold would flip the label. These regions coincide with misclassified pixels, change boundaries and missed regions, so a system can report only confident changes or revisit uncertain ones while still on site. Drag the slider to compare the prediction (left) with its margin map (right).</p>
+        <div data-tabs>
+            <div class="tabs" role="tablist" aria-label="Decision-margin scene">
+              <button role="tab" id="mt-porch" aria-controls="mp-porch" aria-selected="true">Porch</button>
+              <button role="tab" id="mt-pots" aria-controls="mp-pots" aria-selected="false" tabindex="-1">Pots</button>
+              <button role="tab" id="mt-cantina" aria-controls="mp-cantina" aria-selected="false" tabindex="-1">Cantina</button>
+              <button role="tab" id="mt-meeting_room" aria-controls="mp-meeting_room" aria-selected="false" tabindex="-1">Meeting room</button>
+            </div>
+          <figure class="fig prose" style="max-width: 960px">
+            <div>
+            <div role="tabpanel" id="mp-porch" aria-labelledby="mt-porch">
+              <div class="compare-grid">
+                <div class="cell"><span class="chip">Pre-change (rendered)</span><img src="../static/oscdpp/images/margin/porch_ref.jpg" width="1008" height="567" loading="lazy" alt="Porch: reference map rendered at the estimated pose"></div>
+                <div class="cell"><span class="chip">Post-change</span><img src="../static/oscdpp/images/margin/porch_inf.jpg" width="1008" height="567" loading="lazy" alt="Porch: post-change inference image"></div>
+              </div>
+              <div class="compare" style="margin-top: 10px">
+                <img src="../static/oscdpp/images/margin/porch_pred.png" width="1008" height="567" loading="lazy" alt="Porch: O-SCD++ change mask, IoU 0.624, F1 0.769">
+                <div class="after"><img src="../static/oscdpp/images/margin/porch_margin.jpg" width="1008" height="567" loading="lazy" alt="Porch: decision-margin map, bright where the margin is small"></div>
+                <div class="handle"></div>
+                <span class="chip">O-SCD++ prediction</span>
+                <span class="chip right">Decision margin</span>
+                <span class="chip metric">IoU 0.624 · F1 0.769</span>
+                <input type="range" min="0" max="100" value="50" aria-label="Drag to compare the O-SCD++ prediction (left) with its decision margin (right) in Porch">
+              </div>
+            </div>
+            <div role="tabpanel" id="mp-pots" aria-labelledby="mt-pots" hidden>
+              <div class="compare-grid">
+                <div class="cell"><span class="chip">Pre-change (rendered)</span><img src="../static/oscdpp/images/margin/pots_ref.jpg" width="1008" height="567" loading="lazy" alt="Pots: reference map rendered at the estimated pose"></div>
+                <div class="cell"><span class="chip">Post-change</span><img src="../static/oscdpp/images/margin/pots_inf.jpg" width="1008" height="567" loading="lazy" alt="Pots: post-change inference image"></div>
+              </div>
+              <div class="compare" style="margin-top: 10px">
+                <img src="../static/oscdpp/images/margin/pots_pred.png" width="1008" height="567" loading="lazy" alt="Pots: O-SCD++ change mask, IoU 0.778, F1 0.875">
+                <div class="after"><img src="../static/oscdpp/images/margin/pots_margin.jpg" width="1008" height="567" loading="lazy" alt="Pots: decision-margin map, bright where the margin is small"></div>
+                <div class="handle"></div>
+                <span class="chip">O-SCD++ prediction</span>
+                <span class="chip right">Decision margin</span>
+                <span class="chip metric">IoU 0.778 · F1 0.875</span>
+                <input type="range" min="0" max="100" value="50" aria-label="Drag to compare the O-SCD++ prediction (left) with its decision margin (right) in Pots">
+              </div>
+            </div>
+            <div role="tabpanel" id="mp-cantina" aria-labelledby="mt-cantina" hidden>
+              <div class="compare-grid">
+                <div class="cell"><span class="chip">Pre-change (rendered)</span><img src="../static/oscdpp/images/margin/cantina_ref.jpg" width="1008" height="567" loading="lazy" alt="Cantina: reference map rendered at the estimated pose"></div>
+                <div class="cell"><span class="chip">Post-change</span><img src="../static/oscdpp/images/margin/cantina_inf.jpg" width="1008" height="567" loading="lazy" alt="Cantina: post-change inference image"></div>
+              </div>
+              <div class="compare" style="margin-top: 10px">
+                <img src="../static/oscdpp/images/margin/cantina_pred.png" width="1008" height="567" loading="lazy" alt="Cantina: O-SCD++ change mask, IoU 0.610, F1 0.758">
+                <div class="after"><img src="../static/oscdpp/images/margin/cantina_margin.jpg" width="1008" height="567" loading="lazy" alt="Cantina: decision-margin map, bright where the margin is small"></div>
+                <div class="handle"></div>
+                <span class="chip">O-SCD++ prediction</span>
+                <span class="chip right">Decision margin</span>
+                <span class="chip metric">IoU 0.610 · F1 0.758</span>
+                <input type="range" min="0" max="100" value="50" aria-label="Drag to compare the O-SCD++ prediction (left) with its decision margin (right) in Cantina">
+              </div>
+            </div>
+            <div role="tabpanel" id="mp-meeting_room" aria-labelledby="mt-meeting_room" hidden>
+              <div class="compare-grid">
+                <div class="cell"><span class="chip">Pre-change (rendered)</span><img src="../static/oscdpp/images/margin/meeting_room_ref.jpg" width="1008" height="567" loading="lazy" alt="Meeting room: reference map rendered at the estimated pose"></div>
+                <div class="cell"><span class="chip">Post-change</span><img src="../static/oscdpp/images/margin/meeting_room_inf.jpg" width="1008" height="567" loading="lazy" alt="Meeting room: post-change inference image"></div>
+              </div>
+              <div class="compare" style="margin-top: 10px">
+                <img src="../static/oscdpp/images/margin/meeting_room_pred.png" width="1008" height="567" loading="lazy" alt="Meeting room: O-SCD++ change mask, IoU 0.687, F1 0.815">
+                <div class="after"><img src="../static/oscdpp/images/margin/meeting_room_margin.jpg" width="1008" height="567" loading="lazy" alt="Meeting room: decision-margin map, bright where the margin is small"></div>
+                <div class="handle"></div>
+                <span class="chip">O-SCD++ prediction</span>
+                <span class="chip right">Decision margin</span>
+                <span class="chip metric">IoU 0.687 · F1 0.815</span>
+                <input type="range" min="0" max="100" value="50" aria-label="Drag to compare the O-SCD++ prediction (left) with its decision margin (right) in Meeting room">
+              </div>
+            </div>
+            </div>
+            <figcaption><b>Figure 4.</b> Decision margins of O-SCD++ on PASLCD. The margin map is bright where the margin is small, that is, where a slightly different threshold would change the label. The prediction is colour-coded against the ground truth: white true positive, black true negative, red false negative, purple false positive.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="series">
+      <div class="wrap">
+        <span class="eyebrow">Multi-view label-free scene change detection</span>
+        <h2>Related work</h2>
+        <div class="cards">
+          <a class="pcard" href="https://chumsy0725.github.io/MV-3DCD/">
+            <span class="meta"><i class="dot"></i>CVPR 2025</span>
+            <span class="t">MV3DCD</span>
+            <span class="d">Multi-View Pose-Agnostic Change Localization with Zero Labels: label-free multi-view change detection with 3DGS, offline.</span>
+          </a>
+          <a class="pcard" href="../">
+            <span class="meta"><i class="dot oscd"></i>CVPR 2026 · Highlight</span>
+            <span class="t">O-SCD</span>
+            <span class="d">Changes in Real Time: online scene change detection with multi-view fusion.</span>
+          </a>
+          <div class="pcard current" aria-current="page">
+            <span class="meta"><i class="dot oscdpp"></i>Preprint 2026</span>
+            <span class="t">O-SCD++</span>
+            <span class="d">Replay-free online scene change detection via recursive evidence fusion.</span>
+            <span class="here">You are here</span>
+          </div>
+          <a class="pcard" href="https://chumsy0725.github.io/GS-DIFF/">
+            <span class="meta"><i class="dot"></i>Preprint 2026</span>
+            <span class="t">GS-Diff</span>
+            <span class="d">From Pixels to Primitives: scene change detection in 3D Gaussian Splatting.</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="bibtex">
+      <div class="wrap prose">
+        <span class="eyebrow">Citation</span>
+        <h2>BibTeX</h2>
+        <div class="bib">
+          <button class="copy-btn" type="button" data-copy="#bib-oscdpp"><svg><use href="#i-copy"/></svg><span>Copy</span></button>
+          <!-- At release: replace with the arXiv entry. -->
+<pre id="bib-oscdpp">@article{galappaththige2026oscdpp,
+  title   = {O-SCD++: Replay-Free Online Scene Change Detection via Recursive Evidence Fusion},
+  author  = {Galappaththige, Chamuditha Jayanga and Lai, Jason and Windrim, Lloyd and Patten, Timothy and Dansereau, Donald and Suenderhauf, Niko and Miller, Dimity},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</pre>
+        </div>
+        <p class="table-note">If you use the online setting or PASLCD, please also cite <a href="../#bibtex">O-SCD</a>.</p>
+      </div>
+    </section>
+
+    <section class="section" id="ack" style="padding-top: 0">
+      <div class="wrap prose">
+        <p class="ack">This work was supported by the Australian Research Council Research Hub in Intelligent Robotic Systems for Real-Time Asset Management (ARIAM, IH210100030) and Abyss Solutions. C.J.G., N.S. and D.M. also acknowledge ongoing support from the QUT Centre for Robotics.</p>
+        <div class="logos"><img src="../static/images/logos.png" width="1675" height="218" loading="lazy" alt="QUT Centre for Robotics, ARIAM, The University of Sydney and Abyss Solutions logos"></div>
+      </div>
+    </section>
   </main>
+
+  <footer class="site">
+    <div class="wrap">
+      Website licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Layout inspired by <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+    </div>
+  </footer>
 </body>
 </html>
