@@ -1,843 +1,369 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Changes in Real Time: Online Scene Change Detection with Multi-View Fusion">
-  <meta name="keywords"
-    content="Online Scene Change Detection, Real-time Change Detection, Multi-view Fusion, Pose-agnostic Change Detection, Label-free Change Detection, 3D Gaussian Splatting, Scene Change Detection, Multi-view Change Localization">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OSCD</title>
+  <title>O-SCD · Changes in Real Time (CVPR 2026)</title>
+  <meta name="description" content="O-SCD: the first online scene change detection method that is pose-agnostic, label-free and multi-view consistent, running at over 10 FPS and surpassing the best offline approaches. CVPR 2026 Highlight.">
+  <meta name="keywords" content="Online Scene Change Detection, Real-time Change Detection, Multi-view Fusion, Pose-agnostic, Label-free, 3D Gaussian Splatting, PASLCD">
+  <link rel="canonical" href="https://chumsy0725.github.io/O-SCD/">
+  <meta name="theme-color" content="#1f77b4">
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
-  <link rel="stylesheet" href="./static/css/dics.original.css">
-  <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" href="./static/images/oscd_favicon.png">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
-  <script src="./static/js/dics.original.js"></script>
-</head>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="O-SCD">
+  <meta property="og:title" content="Changes in Real Time: Online Scene Change Detection with Multi-View Fusion">
+  <meta property="og:description" content="Pose-agnostic, label-free online scene change detection at over 10 FPS that surpasses offline methods. CVPR 2026 Highlight.">
+  <meta property="og:url" content="https://chumsy0725.github.io/O-SCD/">
+  <meta property="og:image" content="https://chumsy0725.github.io/O-SCD/static/images/og-oscd.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
 
-<body>
+  <meta name="citation_title" content="Changes in Real Time: Online Scene Change Detection with Multi-View Fusion">
+  <meta name="citation_author" content="Galappaththige, Chamuditha Jayanga">
+  <meta name="citation_author" content="Lai, Jason">
+  <meta name="citation_author" content="Windrim, Lloyd">
+  <meta name="citation_author" content="Dansereau, Donald">
+  <meta name="citation_author" content="Suenderhauf, Niko">
+  <meta name="citation_author" content="Miller, Dimity">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)">
+  <meta name="citation_firstpage" content="32246">
+  <meta name="citation_lastpage" content="32256">
+  <meta name="citation_pdf_url" content="https://openaccess.thecvf.com/content/CVPR2026/papers/Galappaththige_Changes_in_Real_Time_Online_Scene_Change_Detection_with_Multi-View_CVPR_2026_paper.pdf">
+  <meta name="citation_arxiv_id" content="2511.12370">
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">
-              <span class="gradient-text" style="font-size: 1em;">Changes in Real Time</span>: Online Scene Change
-              Detection with Multi-View Fusion
-            </h1>
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">
-                <a href="">Chamuditha Jayanga </a><sup>1,2</sup>,</span>
-              <span class="author-block">
-                <a href="">Jason Lai </a><sup>3</sup>,</span>
-              <span class="author-block">
-                <a href="">Lloyd Windrim </a><sup>2,4</sup>,
-              </span>
-              <span class="author-block">
-                <a href="">Donald Dansereau </a><sup>2,3</sup>,
-              </span>
-              <span class="author-block">
-                <a href="">Niko Suenderhauf </a><sup>1,2</sup>,
-              </span>
-              <span class="author-block">
-                <a href="">Dimity Miller </a><sup>1,2</sup>
-              </span>
-            </div>
-
-            <div class="is-size-5 publication-authors">
-              <span class="author-block"><sup>1</sup>QUT Centre for Robotics, &nbsp; </span>
-              <span class="author-block"><sup>2</sup>ARIAM Hub, &nbsp; </span>
-              <span class="author-block"><sup>3</sup>ACFR, University of Sydney, &nbsp; </span>
-              <span class="author-block"><sup>4</sup>Abyss Solutions</span>
-            </div>
-
-            <!-- Uncomment and update when paper is accepted -->
-            <div class="is-size-6 publication-authors">
-              <span class="gradient-text">CVPR 2026 (✨ Highlight ✨)</span>
-            </div>
-
-            <div class="column has-text-centered">
-              <div class="publication-links">
-                <!-- PDF Link. -->
-                <span class="link-block">
-                  <a href="https://openaccess.thecvf.com/content/CVPR2026/html/Galappaththige_Changes_in_Real_Time_Online_Scene_Change_Detection_with_Multi-View_CVPR_2026_paper.html"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                    </span>
-                    <span>Paper</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://arxiv.org/abs/2511.12370" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                    </span>
-                    <span>arXiv</span>
-                  </a>
-                </span>
-                <!-- Code Link. -->
-                <span class="link-block">
-                  <a href="https://github.com/Chumsy0725/O-SCD"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://chumsy0725.github.io/MV-3DCD/"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                    </span>
-                    <span>Previous Work: MV3DCD</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://chumsy0725.github.io/GS-DIFF/"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                    </span>
-                    <span>New Work: GS-DIFF</span>
-                  </a>
-                </span>
-                <!-- Dataset Link (placeholder - uncomment when available) -->
-                <!--               <span class="link-block">
-                <a href="#"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="far fa-images"></i>
-                  </span>
-                  <span>Dataset</span>
-                </a>
-              </span> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- Video Carousel Section -->
-  <section class="section pb-0"> <!-- Reduced padding-bottom so it flows into abstract seamlessly -->
-    <div class="container is-centered has-text-centered">
-      <div class="columns is-centered">
-        <div class="column is-10">
-          <div style="display: inline-block; max-width: 80%; width: 80%;">
-            <!-- Video Carousel -->
-            <div id="video-carousel" style="position: relative; margin: 0 40px;">
-              <div class="swiper-container"
-                style="border-radius: 15px; overflow: visible; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 0;">
-                <div class="swiper-wrapper">
-                  <!-- Slide 1: Garden -->
-                  <div class="swiper-slide">
-                    <div style="background: white; padding: 1.5rem;">
-                      <h3 class="title is-5" style="margin-bottom: 1rem;">Garden</h3>
-                      <video class="carousel-video" muted playsinline
-                        style="width: 100%; height: auto; display: block; max-height: 600px;">
-                        <source src="./static/videos/garden.mp4" type="video/mp4">
-                      </video>
-                    </div>
-                  </div>
-
-                  <!-- Slide 2: Lounge -->
-                  <div class="swiper-slide">
-                    <div style="background: white; padding: 1.5rem;">
-                      <h3 class="title is-5" style="margin-bottom: 1rem;">Lounge</h3>
-                      <video class="carousel-video" muted playsinline
-                        style="width: 100%; height: auto; display: block; max-height: 600px;">
-                        <source src="./static/videos/lounge.webm" type="video/webm">
-                      </video>
-                    </div>
-                  </div>
-
-                  <!-- Slide 3: Meeting Room -->
-                  <div class="swiper-slide">
-                    <div style="background: white; padding: 1.5rem;">
-                      <h3 class="title is-5" style="margin-bottom: 1rem;">Meeting Room</h3>
-                      <video class="carousel-video" muted playsinline
-                        style="width: 100%; height: auto; display: block; max-height: 600px;">
-                        <source src="./static/videos/meeting_room.webm" type="video/webm">
-                      </video>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Navigation arrows -->
-                <div class="swiper-button-prev video-prev" style="color: #667eea; left: -10px;"></div>
-                <div class="swiper-button-next video-next" style="color: #667eea; right: -10px;"></div>
-
-                <!-- Pagination dots -->
-                <div class="swiper-pagination video-pagination"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Abstract Section -->
-  <section class="section">
-    <div class="container is-centered has-text-centered">
-      <div class="columns is-four-fifths is-centered">
-        <div class="column is-10">
-          <h2 class="title is-3">Abstract</h2>
-          <div class="content has-text-centered ">
-            <p>
-              <strong>Online Scene Change Detection (SCD)</strong> is an extremely challenging problem that requires an
-              agent to detect relevant changes on the fly while observing the scene from unconstrained viewpoints.
-              Existing online SCD methods are significantly less accurate than offline approaches. We present the
-              <strong>first online SCD approach</strong> that is <span class="metric-highlight">pose-agnostic</span>,
-              <span class="metric-highlight">label-free</span>, and ensures <span class="metric-highlight">multi-view
-                consistency</span>, while operating at <strong class="metric-highlight">over 10 FPS</strong> and
-              achieving <strong>new state-of-the-art performance</strong>, surpassing even the best offline approaches.
-            </p>
-            <p>
-              Our method introduces a new <strong>self-supervised fusion loss</strong> to infer scene changes from
-              multiple cues and observations, <strong>PnP-based fast pose estimation</strong> against the reference
-              scene, and a <strong>fast change-guided representation update strategy</strong> for the 3D Gaussian
-              Splatting. Extensive experiments on complex real-world datasets demonstrate that our approach
-              outperforms both online and offline baselines.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Hero Figure Section -->
-  <section class="section" style="background-color: #f8f9fa; padding: 3rem 0;">
-    <div class="container is-centered has-text-centered">
-      <div class="columns is-centered">
-        <div class="column is-10">
-          <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-            <img src="./static/images/FPS_vs_F1.svg" alt="Performance Comparison"
-              style="max-width: 100%; height: auto; margin-left: -100px;">
-            <p
-              style="margin-top: 1.5rem; font-size: 1rem; line-height: 1.6; color: #333; text-align: center; max-width: 900px; margin-left: auto; margin-right: auto;">
-              Our online Scene Change Detection method establishes a new state of the art, detecting changes more
-              reliably than all prior methods, including the strongest offline baselines. It operates at a runtime
-              comparable to the fastest online approaches while achieving substantially higher F1 scores. These gains
-              are enabled by a self-supervised loss enforcing multi-view consistency and a lightweight PnP-based pose
-              estimation module.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Method Overview Section -->
-  <section class="section">
-    <div class="container is-centered has-text-centered">
-      <div class="columns is-four-fifths is-centered">
-        <div class="column is-10">
-          <h2 class="title is-3">Method Overview</h2>
-          <div class="content has-text-centered">
-            <div style="display: inline-block; max-width: 100%;">
-              <img src="./static/images/main.jpeg" alt="Method Overview"
-                style="width: 100%; height: auto; border-radius: 10px; display: block;">
-              <p style="margin-top: 1.5rem; font-size: 1rem; line-height: 1.7; color: #333; text-align: center;">
-                We register an incoming inference image <em>I</em><sub>inf</sub><sup><em>k</em></sup> to an existing
-                reference representation ℛ<sub>ref</sub> with a <span
-                  style="color: #dc3545; font-weight: 600;">lightweight PnP-based pose estimator</span>. Using the
-                estimated pose <em>P</em><sub>inf</sub><sup><em>k</em></sup> and ℛ<sub>ref</sub> to render an aligned
-                image <em>I</em><sub>ren</sub><sup><em>k</em></sup>, we extract change cues
-                <em>C</em><sup><em>k</em></sup> as a combination of pixel- and feature-level cues. <span
-                  style="color: #228b22; font-weight: 600;">Our novel self-supervised fusion loss
-                  <em>L</em><sub>SSF</sub></span> guides the fusion of all observed change cues to build a change
-                representation ℛ<sub>change</sub> that collectively learns change information from multiple viewpoints
-                and
-                infer change masks <em>M</em><sup><em>k</em></sup>. Finally, we <span
-                  style="color: #0066cc; font-weight: 600;">selectively reconstruct changed regions</span> to update the
-                3D Gaussian Splatting
-                representation to the current state ℛ<sub>inf</sub>.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Results Section -->
-  <section class="section" style="background-color: #f8f9fa; padding: 3rem 0;">
-    <div class="container is-centered has-text-centered">
-      <div class="columns is-centered">
-        <div class="column is-10">
-          <h2 class="title is-3">Qualitative Results</h2>
-
-          <!-- Legend -->
-          <div style="margin-bottom: 2rem;">
-            <img src="./static/images/legend.png" alt="Legend" style="max-width: 800px; height: auto;">
-          </div>
-
-          <!-- Carousel and Caption Container -->
-          <div style="display: inline-block; max-width: 100%; width: 100%;">
-            <!-- Carousel -->
-            <div id="results-carousel" style="position: relative;">
-              <div class="swiper-container"
-                style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-                <div class="swiper-wrapper">
-                  <!-- Slide 1: Lounge -->
-                  <div class="swiper-slide">
-                    <div style="background: white; padding: 1.5rem;">
-                      <h3 class="title is-5" style="margin-bottom: 1rem;">Lounge</h3>
-                      <img src="./static/images/lounge.png" alt="Lounge Results"
-                        style="width: 100%; height: 500px; object-fit: contain; display: block;">
-                    </div>
-                  </div>
-
-                  <!-- Slide 2: Porch -->
-                  <div class="swiper-slide">
-                    <div style="background: white; padding: 1.5rem;">
-                      <h3 class="title is-5" style="margin-bottom: 1rem;">Porch</h3>
-                      <img src="./static/images/porch.png" alt="Porch Results"
-                        style="width: 100%; height: 500px; object-fit: contain; display: block;">
-                    </div>
-                  </div>
-
-                  <!-- Slide 3: Meeting Room -->
-                  <div class="swiper-slide">
-                    <div style="background: white; padding: 1.5rem;">
-                      <h3 class="title is-5" style="margin-bottom: 1rem;">Meeting Room</h3>
-                      <img src="./static/images/meeting_room.png" alt="Meeting Room Results"
-                        style="width: 100%; height: 500px; object-fit: contain; display: block;">
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Navigation arrows -->
-                <div class="swiper-button-prev" style="color: #667eea;"></div>
-                <div class="swiper-button-next" style="color: #667eea;"></div>
-
-                <!-- Pagination dots -->
-                <div class="swiper-pagination"></div>
-              </div>
-            </div>
-
-            <p style="margin-top: 1.5rem; font-size: 1rem; color: #555; text-align: center; line-height: 1.7;">
-              <strong>Qualitative comparison with MV3DCD.</strong> MV3DCD's hard thresholding and intersection heuristic
-              lead to missed or spurious detections, especially for subtle appearance changes in semantically similar
-              objects (red-to-blue T-shaped object in Meeting Room, blue-to-black bench in Porch). Hard thresholding
-              risks
-              discarding subtle but important changes, while the intersection fails to capture true changes unless
-              present
-              in both masks. Our method jointly learns complementary change information in pixel- and feature-level cues
-              via our novel self-supervised loss, capturing fine-grained changes and achieving state-of-the-art
-              performance
-              in both online and offline settings.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Swiper CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-  <!-- Swiper JS -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <link rel="icon" href="static/icons/oscd.svg" type="image/svg+xml">
+  <link rel="icon" href="static/icons/oscd-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="static/icons/oscd-180.png">
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const resultsSwiper = new Swiper('#results-carousel .swiper-container', {
-        loop: true,
-        autoplay: {
-          delay: 4000,
-          disableOnInteraction: false,
-        },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      });
-
-      const videoSwiper = new Swiper('#video-carousel .swiper-container', {
-        initialSlide: 1,
-        loop: false,
-        navigation: {
-          nextEl: '.video-next',
-          prevEl: '.video-prev',
-        },
-        pagination: {
-          el: '.video-pagination',
-          clickable: true,
-        },
-        on: {
-          init: function () {
-            playCurrentVideo(this);
-          },
-          slideChangeTransitionEnd: function () {
-            playCurrentVideo(this);
-          },
-          slideChangeTransitionStart: function () {
-            pauseAllVideos(this);
-          }
-        }
-      });
-
-      function playCurrentVideo(swiper) {
-        const activeSlide = swiper.slides[swiper.activeIndex];
-        const video = activeSlide.querySelector('video');
-        if (video) {
-          video.currentTime = 0;
-          video.loop = false;
-          video.play().catch(function (e) { console.log("Play prevented:", e); });
-          video.onended = function () {
-            swiper.slideTo(1);
-          };
-        }
-      }
-
-      function pauseAllVideos(swiper) {
-        const videos = swiper.el.querySelectorAll('video');
-        for (let i = 0; i < videos.length; i++) {
-          videos[i].pause();
-        }
-      }
-    });
+    try { var t = localStorage.getItem("oscd-theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
   </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+  <link rel="stylesheet" href="static/css/site.css">
+  <script defer src="static/js/site.js"></script>
+</head>
 
+<body data-paper="oscd">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-paper" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></symbol>
+    <symbol id="i-arxiv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+    <symbol id="i-github" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+    <symbol id="i-data" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></symbol>
+    <symbol id="i-bib" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1M16 21h1a2 2 0 0 0 2-2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4h4v16H7zM13 4h4v16h-4z"/></symbol>
+  </svg>
 
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- Quantitative Results Section -->
-  <section class="section">
-    <div class="container is-centered has-text-centered">
-      <div class="columns is-centered">
-        <div class="column is-11">
-          <h2 class="title is-3">Quantitative Results</h2>
+  <header class="series-bar">
+    <div class="wrap">
+      <a class="series-brand" href="./" aria-label="O-SCD series home">
+        <img src="static/icons/oscd.svg" alt="" width="22" height="22">O-SCD <span>series</span>
+      </a>
+      <nav class="series-nav" aria-label="Papers in the O-SCD series">
+        <a href="./" aria-current="page"><i class="dot oscd"></i>O-SCD <small>CVPR&nbsp;'26</small></a>
+        <a href="plusplus/"><i class="dot oscdpp"></i>O-SCD++ <small>soon</small></a>
+      </nav>
+      <div class="series-tools">
+        <a class="icon-btn" href="https://github.com/Chumsy0725/O-SCD" aria-label="GitHub repository"><svg><use href="#i-github"/></svg></a>
+        <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode"><svg class="sun"><use href="#i-sun"/></svg><svg class="moon"><use href="#i-moon"/></svg></button>
+      </div>
+    </div>
+  </header>
 
-          <p
-            style="margin-bottom: 2rem; font-size: 1rem; color: #555; line-height: 1.6; max-width: 1000px; margin-left: auto; margin-right: auto;">
-            Quantitative results for SCD on PASLCD averaged over all 20 instances.
-            <strong>LF</strong>: Label-Free, <strong>PA</strong>: Pose-Agnostic, <strong>MV</strong>: Multi-View
-            consistency for change detection.
-            We report total runtime for <span
-              style="background: #ffe6e6; padding: 2px 6px; border-radius: 3px;">offline</span> methods and operating
-            frame rate (FPS) for <span style="background: #e6f3ff; padding: 2px 6px; border-radius: 3px;">online</span>
-            methods.
-            Our method achieves the best performance in both settings.
-          </p>
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <span class="venue">CVPR 2026 <i class="sep"></i> Highlight</span>
+        <h1><span class="lead">Changes in Real Time</span>: Online Scene Change Detection with Multi-View Fusion</h1>
+        <div class="authors">
+          <span class="list">
+            <span class="name">Chamuditha Jayanga<sup>1,2</sup></span>
+            <span class="name">Jason Lai<sup>3</sup></span>
+            <span class="name">Lloyd Windrim<sup>2,4</sup></span>
+            <span class="name">Donald Dansereau<sup>2,3</sup></span>
+            <span class="name">Niko Suenderhauf<sup>1,2</sup></span>
+            <span class="name">Dimity Miller<sup>1,2</sup></span>
+          </span>
+        </div>
+        <div class="affils">
+          <span><sup>1</sup>QUT Centre for Robotics</span>
+          <span><sup>2</sup>ARIAM Hub</span>
+          <span><sup>3</sup>ACFR, University of Sydney</span>
+          <span><sup>4</sup>Abyss Solutions</span>
+        </div>
+        <div class="links">
+          <a class="btn" href="https://openaccess.thecvf.com/content/CVPR2026/html/Galappaththige_Changes_in_Real_Time_Online_Scene_Change_Detection_with_Multi-View_CVPR_2026_paper.html"><svg><use href="#i-paper"/></svg>Paper</a>
+          <a class="btn" href="https://arxiv.org/abs/2511.12370"><svg><use href="#i-arxiv"/></svg>arXiv</a>
+          <a class="btn" href="https://github.com/Chumsy0725/O-SCD/tree/main/O-SCD"><svg><use href="#i-github"/></svg>Code</a>
+          <a class="btn" href="https://huggingface.co/datasets/ChamudithaJay/PASLCD"><svg><use href="#i-data"/></svg>PASLCD Dataset</a>
+          <a class="btn ghost" href="#bibtex"><svg><use href="#i-bib"/></svg>BibTeX</a>
+        </div>
+        <p class="tldr"><b>TL;DR</b>Detect what has changed in a mapped scene while you walk through it: no labels, no known poses, multi-view consistent, over 10&nbsp;FPS, and more accurate than the best offline methods.</p>
+      </div>
+    </section>
 
-          <!-- Two Tables Side by Side -->
-          <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-
-            <!-- Offline Methods Table -->
-            <div style="flex: 1; min-width: 450px; max-width: 550px;">
-              <h3 class="title is-5" style="margin-bottom: 1rem; color: #dc3545;">
-                <span style="background: #ffe6e6; padding: 4px 12px; border-radius: 5px;">Offline Methods</span>
-              </h3>
-              <div style="overflow-x: auto;">
-                <table
-                  style="width: 100%; border-collapse: collapse; box-shadow: 0 2px 10px rgba(0,0,0,0.1); background: white; border-radius: 8px; overflow: hidden; font-size: 0.9em;">
-                  <thead>
-                    <tr style="background: #ffb3ba; color: #333;">
-                      <th style="padding: 10px 12px; text-align: left; font-weight: 600;">Method</th>
-                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">LF</th>
-                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">PA</th>
-                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">MV</th>
-                      <th style="padding: 10px 12px; text-align: center; font-weight: 600;">mIoU ↑</th>
-                      <th style="padding: 10px 12px; text-align: center; font-weight: 600;">F1 ↑</th>
-                      <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">Runtime
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr style="background: #ffe6e6;">
-                      <td style="padding: 8px 12px;">R-SCD</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.118</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.199</td>
-                      <td style="padding: 8px 12px; text-align: center;">194s</td>
-                    </tr>
-                    <tr style="background: #fff0f0;">
-                      <td style="padding: 8px 12px;">CYWS2D</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.273</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.398</td>
-                      <td style="padding: 8px 12px; text-align: center; font-style: italic;">189s
-                      </td>
-                    </tr>
-                    <tr style="background: #ffe6e6;">
-                      <td style="padding: 8px 12px;">GeSCD</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.477</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.611</td>
-                      <td style="padding: 8px 12px; text-align: center;">298s</td>
-                    </tr>
-                    <tr style="background: #fff0f0;">
-                      <td style="padding: 8px 12px;">ZeroSCD</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.306</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.414</td>
-                      <td style="padding: 8px 12px; text-align: center;">409s</td>
-                    </tr>
-                    <tr style="background: #ffe6e6;">
-                      <td style="padding: 8px 12px;">3DGS-CD</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.209</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.339</td>
-                      <td style="padding: 8px 12px; text-align: center;">824s</td>
-                    </tr>
-                    <tr style="background: #fff0f0;">
-                      <td style="padding: 8px 12px;">MV3DCD</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 12px; text-align: center; font-style: italic;">0.478
-                      </td>
-                      <td style="padding: 8px 12px; text-align: center; font-style: italic;">0.628
-                      </td>
-                      <td style="padding: 8px 12px; text-align: center;">479s</td>
-                    </tr>
-                    <tr style="background: #ffe6e6; font-weight: 600;">
-                      <td style="padding: 8px 12px;"><strong>Ours</strong></td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">0.552
-                      </td>
-                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">0.694
-                      </td>
-                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">156s
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+    <section class="section" style="padding-top: 8px" aria-label="Demo videos">
+      <div class="wrap">
+        <div class="card" data-tabs data-video-stage>
+          <div class="tabs" role="tablist" aria-label="Demo scene" style="margin: 14px 0 12px">
+            <button role="tab" id="vt-garden" aria-controls="vp-garden" aria-selected="true">Garden</button>
+            <button role="tab" id="vt-lounge" aria-controls="vp-lounge" aria-selected="false" tabindex="-1">Lounge</button>
+            <button role="tab" id="vt-meeting" aria-controls="vp-meeting" aria-selected="false" tabindex="-1">Meeting room</button>
+          </div>
+          <div class="video-stage">
+            <div role="tabpanel" id="vp-garden" aria-labelledby="vt-garden">
+              <video muted loop playsinline preload="metadata" poster="static/oscd/videos/garden_poster.jpg" data-src="static/oscd/videos/garden.mp4" aria-label="O-SCD viewer recording, Garden scene"></video>
             </div>
-
-            <!-- Online Methods Table -->
-            <div style="flex: 1; min-width: 450px; max-width: 550px;">
-              <h3 class="title is-5" style="margin-bottom: 1rem; color: #0066cc;">
-                <span style="background: #e6f3ff; padding: 4px 12px; border-radius: 5px;">Online Methods</span>
-              </h3>
-              <div style="overflow-x: auto;">
-                <table
-                  style="width: 100%; border-collapse: collapse; box-shadow: 0 2px 10px rgba(0,0,0,0.1); background: white; border-radius: 8px; overflow: hidden; font-size: 0.9em;">
-                  <thead>
-                    <tr style="background: #bae1ff; color: #333;">
-                      <th style="padding: 10px 12px; text-align: left; font-weight: 600;">Method</th>
-                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">LF</th>
-                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">PA</th>
-                      <th style="padding: 10px 8px; text-align: center; font-weight: 600; font-size: 0.85em;">MV</th>
-                      <th style="padding: 10px 12px; text-align: center; font-weight: 600;">mIoU ↑</th>
-                      <th style="padding: 10px 12px; text-align: center; font-weight: 600;">F1 ↑</th>
-                      <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">FPS</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr style="background: #e6f3ff;">
-                      <td style="padding: 8px 12px;">ChangeSim</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.018</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.034</td>
-                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">11.5
-                      </td>
-                    </tr>
-                    <tr style="background: #f0f8ff;">
-                      <td style="padding: 8px 12px;">CS+CYWS2D</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 12px; text-align: center; font-style: italic;">0.243
-                      </td>
-                      <td style="padding: 8px 12px; text-align: center; font-style: italic;">0.360
-                      </td>
-                      <td style="padding: 8px 12px; text-align: center;">8.2</td>
-                    </tr>
-                    <tr style="background: #e6f3ff;">
-                      <td style="padding: 8px 12px;">CS+GeSCD</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.181</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.270</td>
-                      <td style="padding: 8px 12px; text-align: center;">&lt;1</td>
-                    </tr>
-                    <tr style="background: #f0f8ff;">
-                      <td style="padding: 8px 12px;">OmniposeAD</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.168</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.262</td>
-                      <td style="padding: 8px 12px; text-align: center;">&lt;1</td>
-                    </tr>
-                    <tr style="background: #e6f3ff;">
-                      <td style="padding: 8px 12px;">SplatPose</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.173</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.281</td>
-                      <td style="padding: 8px 12px; text-align: center;">&lt;1</td>
-                    </tr>
-                    <tr style="background: #f0f8ff;">
-                      <td style="padding: 8px 12px;">SplatPose+</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">—</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.237</td>
-                      <td style="padding: 8px 12px; text-align: center;">0.358</td>
-                      <td style="padding: 8px 12px; text-align: center;">&lt;1</td>
-                    </tr>
-                    <tr style="background: #e6f3ff; font-weight: 600;">
-                      <td style="padding: 8px 12px;"><strong>Ours</strong></td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 8px; text-align: center;">✓</td>
-                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">0.486
-                      </td>
-                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">0.638
-                      </td>
-                      <td style="padding: 8px 12px; text-align: center; font-weight: 700;">11.2
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div role="tabpanel" id="vp-lounge" aria-labelledby="vt-lounge" hidden>
+              <video muted loop playsinline preload="none" poster="static/oscd/videos/lounge_poster.jpg" data-src="static/oscd/videos/lounge.mp4" aria-label="O-SCD viewer recording, Lounge scene"></video>
             </div>
+            <div role="tabpanel" id="vp-meeting" aria-labelledby="vt-meeting" hidden>
+              <video muted loop playsinline preload="none" poster="static/oscd/videos/meeting_room_poster.jpg" data-src="static/oscd/videos/meeting_room.mp4" aria-label="O-SCD viewer recording, Meeting room scene"></video>
+            </div>
+            <button class="video-ctrl" type="button" aria-pressed="false" aria-label="Play or pause video"><svg class="pause"><use href="#i-pause"/></svg><svg class="play"><use href="#i-play"/></svg><span>Play / pause</span></button>
+          </div>
+          <div class="media-caption">Recordings of the O-SCD viewer on three PASLCD scenes, stepping through the inference viewpoints with the detected change masks.</div>
+        </div>
 
+        <div class="stats">
+          <div class="stat accent"><div class="v">11.2<small>FPS</small></div><div class="k">Online operation on PASLCD, frame by frame</div></div>
+          <div class="stat"><div class="v">0.486<small>mIoU</small></div><div class="k">Online, already above every offline baseline (best 0.478)</div></div>
+          <div class="stat"><div class="v">0.552<small>mIoU</small></div><div class="k">Offline with refinement: a new state of the art, in 156&nbsp;s</div></div>
+          <div class="stat"><div class="v">8–9<small>×</small></div><div class="k">Faster representation update than re-optimizing from scratch</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="abstract">
+      <div class="wrap prose abstract">
+        <span class="eyebrow">Abstract</span>
+        <h2>Online, pose-agnostic and label-free</h2>
+        <p><strong>Online Scene Change Detection (SCD)</strong> is an extremely challenging problem that requires an agent to detect relevant changes on the fly while observing the scene from unconstrained viewpoints. Existing online SCD methods are significantly less accurate than offline approaches. We present the <strong>first online SCD approach</strong> that is pose-agnostic, label-free, and ensures multi-view consistency, while operating at <strong>over 10 FPS</strong> and achieving new state-of-the-art performance, surpassing even the best offline approaches.</p>
+        <p>Our method introduces a new <strong>self-supervised fusion loss</strong> to infer scene changes from multiple cues and observations, <strong>PnP-based fast pose estimation</strong> against the reference scene, and a <strong>fast change-guided representation update strategy</strong> for the 3D Gaussian Splatting. Extensive experiments on complex real-world datasets demonstrate that our approach outperforms both online and offline baselines.</p>
+      </div>
+    </section>
+
+    <section class="section tint" id="speed">
+      <div class="wrap">
+        <span class="eyebrow">Accuracy vs. speed</span>
+        <h2>Online, and more accurate than offline</h2>
+        <figure class="fig prose" style="max-width: 860px">
+          <div class="card" style="padding: 16px 18px 8px">
+            <div class="chart-legend" aria-hidden="true">
+              <span><i style="background: var(--oscd)"></i>O-SCD (ours)</span>
+              <span><i style="background: var(--neutral-mark)"></i>Online baselines</span>
+              <span style="color: var(--neutral-mark)"><i class="dash"></i><span style="color: var(--ink-2)">Offline methods</span></span>
+            </div>
+            <div class="chart" data-chart>
+              <script type="application/json">
+              {
+                "aria": "Scatter plot of F1 score against frames per second for online scene change detection methods on PASLCD. O-SCD reaches F1 0.638 at 11.2 FPS, above the offline MV3DCD (0.628) and GeSCD (0.611).",
+                "x": { "min": 0, "max": 13, "ticks": [0, 2, 4, 6, 8, 10, 12], "title": "Frames per second (FPS)" },
+                "y": { "min": 0, "max": 0.7, "ticks": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7], "title": "F1 score", "digits": 1 },
+                "refs": [
+                  { "y": 0.628, "label": "MV3DCD (offline) · 0.628", "color": "neutral" },
+                  { "y": 0.611, "label": "GeSCD (offline) · 0.611", "color": "neutral", "below": true }
+                ],
+                "marks": [
+                  { "x": 11.5, "y": 0.034, "name": "ChangeSim", "tip": "11.5 FPS · F1 0.034", "color": "neutral", "label": "ChangeSim", "anchor": "end", "dx": -12 },
+                  { "x": 8.2, "y": 0.360, "name": "CS+CYWS2D", "tip": "8.2 FPS · F1 0.360", "color": "neutral", "label": "CS+CYWS2D" },
+                  { "x": 0.4, "y": 0.358, "name": "SplatPose+", "tip": "< 1 FPS · F1 0.358", "color": "neutral", "label": "SplatPose+" },
+                  { "x": 0.3, "y": 0.281, "name": "SplatPose", "tip": "< 1 FPS · F1 0.281", "color": "neutral", "label": "SplatPose · CS+GeSCD · OmniPoseAD (< 1 FPS)", "dx": 14, "dy": 0, "hideNarrow": true },
+                  { "x": 0.5, "y": 0.270, "name": "CS+GeSCD", "tip": "< 1 FPS · F1 0.270", "color": "neutral" },
+                  { "x": 0.2, "y": 0.262, "name": "OmniPoseAD", "tip": "< 1 FPS · F1 0.262", "color": "neutral" },
+                  { "x": 11.2, "y": 0.638, "name": "O-SCD (ours)", "tip": "11.2 FPS · F1 0.638", "color": "oscd", "shape": "star", "size": 7, "label": "O-SCD (ours)", "strong": true, "anchor": "end", "dx": -16, "dy": -10 }
+                ]
+              }
+              </script>
+            </div>
+          </div>
+          <figcaption><b>Figure 1.</b> Change-detection F1 against throughput on PASLCD. O-SCD detects changes more reliably than all prior methods, including the strongest offline baselines, at a frame rate comparable to the fastest online approaches. Hover a point for its values; methods below 1&nbsp;FPS are spread horizontally for legibility.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="method">
+      <div class="wrap">
+        <span class="eyebrow">Method</span>
+        <h2>Overview</h2>
+        <figure class="fig">
+          <div class="paper">
+            <a class="zoom" href="static/oscd/images/method_full.jpg" aria-label="Open the full-resolution method figure">
+              <img src="static/oscd/images/method.jpg" width="2400" height="678" loading="lazy" alt="Pipeline: an inference image is registered to the reference 3DGS map by lightweight PnP pose estimation; pixel- and feature-level change cues are fused into a change representation by the self-supervised fusion loss to infer change masks; changed regions are then selectively reconstructed to update the map.">
+            </a>
+          </div>
+          <span class="zoom-hint">Click to open full resolution</span>
+          <figcaption><b>Figure 2.</b> We register an incoming inference image <i>I</i><sub>inf</sub><sup><i>k</i></sup> to the reference representation ℛ<sub>ref</sub> with a <strong>lightweight PnP-based pose estimator</strong>. Using the estimated pose <i>P</i><sub>inf</sub><sup><i>k</i></sup> and ℛ<sub>ref</sub> to render an aligned image <i>I</i><sub>ren</sub><sup><i>k</i></sup>, we extract change cues <i>C</i><sup><i>k</i></sup> as a combination of pixel- and feature-level cues. Our <strong>self-supervised fusion loss <i>L</i><sub>SSF</sub></strong> guides the fusion of all observed change cues into a change representation ℛ<sub>change</sub> that learns change information from multiple viewpoints and infers change masks <i>M</i><sup><i>k</i></sup>. Finally, we <strong>selectively reconstruct changed regions</strong> to update the 3D Gaussian Splatting representation to the current state ℛ<sub>inf</sub>.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section tint" id="qualitative">
+      <div class="wrap">
+        <span class="eyebrow">Qualitative results</span>
+        <h2>Comparison with MV3DCD</h2>
+        <div data-tabs>
+          <div class="tabs" role="tablist" aria-label="Qualitative scene">
+            <button role="tab" id="qt-lounge" aria-controls="qp-lounge" aria-selected="true">Lounge</button>
+            <button role="tab" id="qt-porch" aria-controls="qp-porch" aria-selected="false" tabindex="-1">Porch</button>
+            <button role="tab" id="qt-meeting" aria-controls="qp-meeting" aria-selected="false" tabindex="-1">Meeting room</button>
+          </div>
+          <div class="legend" aria-label="Mask colour key">
+            <span><i style="background:#fff"></i>True positive</span>
+            <span><i style="background:#000"></i>True negative</span>
+            <span><i style="background:#ff0000"></i>False negative</span>
+            <span><i style="background:#ff00ff"></i>False positive</span>
+          </div>
+          <figure class="fig prose" style="max-width: 900px">
+            <div class="paper dark flush">
+              <div role="tabpanel" id="qp-lounge" aria-labelledby="qt-lounge"><img src="static/oscd/images/qual_lounge.jpg" width="1040" height="589" loading="lazy" alt="Lounge: reference and inference images (top); MV3DCD mask, IoU 0.504 F1 0.670 (bottom left); O-SCD mask, IoU 0.619 F1 0.765 (bottom right)."></div>
+              <div role="tabpanel" id="qp-porch" aria-labelledby="qt-porch" hidden><img src="static/oscd/images/qual_porch.jpg" width="1040" height="605" loading="lazy" alt="Porch: reference and inference images (top); MV3DCD mask (bottom left) and O-SCD mask (bottom right)."></div>
+              <div role="tabpanel" id="qp-meeting" aria-labelledby="qt-meeting" hidden><img src="static/oscd/images/qual_meeting_room.jpg" width="1035" height="602" loading="lazy" alt="Meeting room: reference and inference images (top); MV3DCD mask (bottom left) and O-SCD mask (bottom right)."></div>
+            </div>
+            <figcaption><b>Figure 3.</b> Top: pre-change and post-change images. Bottom: MV3DCD (left) and O-SCD (right). MV3DCD's hard thresholding and intersection heuristic lead to missed or spurious detections, especially for subtle appearance changes on semantically similar objects (the red-to-blue T-shaped object in Meeting room, the blue-to-black bench in Porch). O-SCD jointly learns complementary change information from pixel- and feature-level cues through its self-supervised loss and captures these fine-grained changes.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="results">
+      <div class="wrap">
+        <span class="eyebrow">Quantitative results</span>
+        <h2>State of the art, online and offline</h2>
+        <p class="lede">Scene change detection on PASLCD, averaged over all 20 instances. <b>LF</b>: label-free, <b>PA</b>: pose-agnostic, <b>MV</b>: multi-view consistent. Best in <b>bold</b>, second <u>underlined</u>.</p>
+        <div class="tables-2">
+          <div class="table-wrap">
+            <table class="results">
+              <caption>Offline methods <small>Total runtime per sequence</small></caption>
+              <thead><tr><th scope="col">Method</th><th scope="col">LF</th><th scope="col">PA</th><th scope="col">MV</th><th scope="col">mIoU ↑</th><th scope="col">F1 ↑</th><th scope="col">Time ↓</th></tr></thead>
+              <tbody>
+                <tr><td>R-SCD</td><td class="no">–</td><td class="no">–</td><td class="no">–</td><td>0.118</td><td>0.199</td><td>194 s</td></tr>
+                <tr><td>CYWS2D</td><td class="no">–</td><td class="no">–</td><td class="no">–</td><td>0.273</td><td>0.398</td><td class="second">189 s</td></tr>
+                <tr><td>GeSCD</td><td class="yes">✓</td><td class="no">–</td><td class="no">–</td><td>0.477</td><td>0.611</td><td>298 s</td></tr>
+                <tr><td>ZeroSCD</td><td class="yes">✓</td><td class="no">–</td><td class="no">–</td><td>0.306</td><td>0.414</td><td>409 s</td></tr>
+                <tr><td>3DGS-CD</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td>0.209</td><td>0.339</td><td>824 s</td></tr>
+                <tr><td>MV3DCD</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="second">0.478</td><td class="second">0.628</td><td>479 s</td></tr>
+                <tr class="ours"><td>O-SCD (ours)</td><td>✓</td><td>✓</td><td>✓</td><td class="best">0.552</td><td class="best">0.694</td><td class="best">156 s</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table class="results">
+              <caption>Online methods <small>Operating frame rate</small></caption>
+              <thead><tr><th scope="col">Method</th><th scope="col">LF</th><th scope="col">PA</th><th scope="col">MV</th><th scope="col">mIoU ↑</th><th scope="col">F1 ↑</th><th scope="col">FPS ↑</th></tr></thead>
+              <tbody>
+                <tr><td>ChangeSim</td><td class="no">–</td><td class="no">–</td><td class="no">–</td><td>0.018</td><td>0.034</td><td class="best">11.5</td></tr>
+                <tr><td>CS+CYWS2D</td><td class="no">–</td><td class="no">–</td><td class="no">–</td><td class="second">0.243</td><td class="second">0.360</td><td>8.2</td></tr>
+                <tr><td>CS+GeSCD</td><td class="yes">✓</td><td class="no">–</td><td class="no">–</td><td>0.181</td><td>0.270</td><td>&lt;1</td></tr>
+                <tr><td>OmniPoseAD</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">–</td><td>0.168</td><td>0.262</td><td>&lt;1</td></tr>
+                <tr><td>SplatPose</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">–</td><td>0.173</td><td>0.281</td><td>&lt;1</td></tr>
+                <tr><td>SplatPose+</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">–</td><td>0.237</td><td>0.358</td><td>&lt;1</td></tr>
+                <tr class="ours"><td>O-SCD (ours)</td><td>✓</td><td>✓</td><td>✓</td><td class="best">0.486</td><td class="best">0.638</td><td class="second">11.2</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Change-Guided Efficient Gaussian Representation Update Section -->
-  <section class="section" style="background-color: #f8f9fa; padding: 3rem 0;">
-    <div class="container is-centered has-text-centered">
-      <div class="columns is-centered">
-        <div class="column is-10">
-          <h2 class="title is-3">Change-Guided Efficient Gaussian Representation Update</h2>
-
-          <div class="content has-text-centered">
-            <div style="display: inline-block; max-width: 100%; width: 100%;">
-              <!-- Image -->
-              <img src="./static/images/Update.jpeg" alt="Change-Guided Update Comparison"
-                style="width: 100%; height: auto; display: block;">
-
-              <!-- Caption/Description -->
-              <p style="margin-top: 1.5rem; font-size: 1rem; line-height: 1.7; color: #333; text-align: center;">
-                Qualitative comparison of rendered views from the updated representation with CLNeRF and 3DGS (from
-                scratch).
-                Our method more accurately reconstructs changed regions (red boxes) while reusing primitives from
-                ℛ<sub>ref</sub> to preserve high fidelity in unchanged areas (yellow boxes), compared to naïve
-                reconstruction at each time.
-              </p>
-            </div>
+    <section class="section tint" id="update">
+      <div class="wrap">
+        <span class="eyebrow">Representation update</span>
+        <h2>Change-guided, efficient Gaussian update</h2>
+        <figure class="fig">
+          <div class="paper">
+            <img src="static/oscd/images/update.jpg" width="2000" height="619" loading="lazy" alt="Rendered views from the updated representation compared with CLNeRF and 3DGS trained from scratch; red boxes mark changed regions and yellow boxes unchanged regions.">
           </div>
+          <figcaption><b>Figure 4.</b> Rendered views from the updated representation, compared with CLNeRF and 3DGS trained from scratch. O-SCD reconstructs changed regions (red boxes) more accurately while reusing primitives from ℛ<sub>ref</sub> to keep unchanged areas (yellow boxes) at high fidelity.</figcaption>
+        </figure>
+        <div class="table-wrap" style="margin-top: 28px">
+          <table class="results">
+            <caption>Scene representation update <small>Averaged over all instances and scenes; best in bold, second underlined</small></caption>
+            <thead>
+              <tr class="group"><th rowspan="2" scope="col" style="vertical-align: bottom">Method</th><th colspan="4" scope="colgroup" class="bl">PASLCD</th><th colspan="4" scope="colgroup" class="bl">CL-Splats</th></tr>
+              <tr><th scope="col" class="bl">PSNR ↑</th><th scope="col">SSIM ↑</th><th scope="col">LPIPS ↓</th><th scope="col">Time (s) ↓</th><th scope="col" class="bl">PSNR ↑</th><th scope="col">SSIM ↑</th><th scope="col">LPIPS ↓</th><th scope="col">Time (s) ↓</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>3DGS</td><td class="bl">22.21</td><td>0.7558</td><td class="second">0.2426</td><td>550</td><td class="bl second">30.31</td><td>0.9319</td><td class="second">0.1178</td><td>364</td></tr>
+              <tr><td>3DGS-LM</td><td class="bl second">22.26</td><td>0.7562</td><td class="best">0.2422</td><td class="second">340</td><td class="bl">29.95</td><td>0.9322</td><td class="best">0.1177</td><td class="second">275</td></tr>
+              <tr><td>SpeedySplats</td><td class="bl">22.25</td><td class="second">0.7603</td><td>0.2618</td><td>399</td><td class="bl">29.89</td><td class="second">0.9349</td><td>0.1290</td><td>312</td></tr>
+              <tr class="divider"><td>CLNeRF</td><td class="bl">22.27</td><td>0.6239</td><td>0.3907</td><td>451</td><td class="bl">26.29</td><td>0.7867</td><td>0.2235</td><td>301</td></tr>
+              <tr class="ours"><td>O-SCD (ours)</td><td class="bl best">23.70</td><td class="best">0.7868</td><td>0.2491</td><td class="best">42</td><td class="bl best">30.54</td><td class="best">0.9356</td><td>0.1256</td><td class="best">39</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">O-SCD matches or exceeds the reconstruction quality of methods that re-optimize the changed scene from scratch, while delivering the updated representation in under a minute, up to 8–9× faster.</p>
+      </div>
+    </section>
 
-          <!-- Quantitative Comparison Table -->
-          <div style="margin-top: 3rem;">
-
-            <div style="overflow-x: auto;">
-              <table
-                style="margin: 0 auto; border-collapse: collapse; box-shadow: 0 2px 10px rgba(0,0,0,0.1); background: white; border-radius: 8px; overflow: hidden; font-size: 0.9em;">
-                <thead>
-                  <tr style="background: #d4a5ff; color: #333;">
-                    <th rowspan="2"
-                      style="padding: 12px 16px; text-align: left; font-weight: 600; border-right: 1px solid #ddd;">
-                      Method</th>
-                    <th colspan="4"
-                      style="padding: 12px 16px; text-align: center; font-weight: 600; border-right: 1px solid #ddd;">
-                      PASLCD</th>
-                    <th colspan="4" style="padding: 12px 16px; text-align: center; font-weight: 600;">CL-Splats</th>
-                  </tr>
-                  <tr style="background: #d4a5ff; color: #333;">
-                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">PSNR (dB) ↑
-                    </th>
-                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">SSIM ↑</th>
-                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">LPIPS ↓
-                    </th>
-                    <th
-                      style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em; border-right: 1px solid #ddd;">
-                      Runtime (s) ↓</th>
-                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">PSNR (dB) ↑
-                    </th>
-                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">SSIM ↑</th>
-                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">LPIPS ↓
-                    </th>
-                    <th style="padding: 10px 12px; text-align: center; font-weight: 600; font-size: 0.85em;">Runtime (s)
-                      ↓</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style="background: #f9f9f9;">
-                    <td style="padding: 10px 16px;">3DGS</td>
-                    <td style="padding: 10px 12px; text-align: center;">22.21</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.7558</td>
-                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">0.2426</td>
-                    <td style="padding: 10px 12px; text-align: center; border-right: 1px solid #ddd;">550</td>
-                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">30.31</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.9319</td>
-                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">0.1178</td>
-                    <td style="padding: 10px 12px; text-align: center;">364</td>
-                  </tr>
-                  <tr style="background: white;">
-                    <td style="padding: 10px 16px;">3DGS-LM</td>
-                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">22.26</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.7562</td>
-                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">0.2422</td>
-                    <td
-                      style="padding: 10px 12px; text-align: center; font-style: italic; border-right: 1px solid #ddd;">
-                      340</td>
-                    <td style="padding: 10px 12px; text-align: center;">29.95</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.9322</td>
-                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">0.1177</td>
-                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">275</td>
-                  </tr>
-                  <tr style="background: #f9f9f9;">
-                    <td style="padding: 10px 16px;">SpeedySplats</td>
-                    <td style="padding: 10px 12px; text-align: center;">22.25</td>
-                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">0.7603</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.2618</td>
-                    <td style="padding: 10px 12px; text-align: center; border-right: 1px solid #ddd;">399</td>
-                    <td style="padding: 10px 12px; text-align: center;">29.89</td>
-                    <td style="padding: 10px 12px; text-align: center; font-style: italic;">0.9349</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.1290</td>
-                    <td style="padding: 10px 12px; text-align: center;">312</td>
-                  </tr>
-                  <tr style="height: 4px; background: #e0e0e0;">
-                    <td colspan="9"></td>
-                  </tr>
-                  <tr style="background: white;">
-                    <td style="padding: 10px 16px;">CLNeRF</td>
-                    <td style="padding: 10px 12px; text-align: center;">22.27</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.6239</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.3907</td>
-                    <td style="padding: 10px 12px; text-align: center; border-right: 1px solid #ddd;">451</td>
-                    <td style="padding: 10px 12px; text-align: center;">26.29</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.7867</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.2235</td>
-                    <td style="padding: 10px 12px; text-align: center;">301</td>
-                  </tr>
-                  <tr style="background: #f9f9f9; font-weight: 600;">
-                    <td style="padding: 10px 16px;"><strong>Ours</strong></td>
-                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">23.70</td>
-                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">0.7868</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.2491</td>
-                    <td style="padding: 10px 12px; text-align: center; font-weight: 700; border-right: 1px solid #ddd;">
-                      42</td>
-                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">30.54</td>
-                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">0.9356</td>
-                    <td style="padding: 10px 12px; text-align: center;">0.1256</td>
-                    <td style="padding: 10px 12px; text-align: center; font-weight: 700;">39</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <p
-              style="margin-top: 1.5rem; font-size: 1rem; color: #555; line-height: 1.6; max-width: 1000px; margin-left: auto; margin-right: auto; text-align: center;">
-              Quantitative comparison of scene representation update on PASLCD and CL-Splats.
-              Our method achieves comparable or higher reconstruction quality than approaches that fully re-optimize the
-              evolved scene from scratch,
-              while providing updated representations within seconds (&lt;60s), achieving up to <strong>8–9×
-                faster</strong> runtimes. Results are averaged over all instances and scenes.
-            </p>
+    <section class="section" id="series">
+      <div class="wrap">
+        <span class="eyebrow">Multi-view label-free scene change detection</span>
+        <h2>Related work</h2>
+        <div class="cards">
+          <a class="pcard" href="https://chumsy0725.github.io/MV-3DCD/">
+            <span class="meta"><i class="dot"></i>CVPR 2025</span>
+            <span class="t">MV3DCD</span>
+            <span class="d">Multi-View Pose-Agnostic Change Localization with Zero Labels: label-free multi-view change detection with 3DGS, offline.</span>
+          </a>
+          <div class="pcard current" aria-current="page">
+            <span class="meta"><i class="dot oscd"></i>CVPR 2026 · Highlight</span>
+            <span class="t">O-SCD</span>
+            <span class="d">Changes in Real Time: online scene change detection with multi-view fusion.</span>
+            <span class="here">You are here</span>
           </div>
+          <a class="pcard" href="plusplus/">
+            <span class="meta"><i class="dot oscdpp"></i>Coming soon</span>
+            <span class="t">O-SCD++</span>
+            <span class="d">The next step in the O-SCD line. Paper and code coming soon.</span>
+          </a>
+          <a class="pcard" href="https://chumsy0725.github.io/GS-DIFF/">
+            <span class="meta"><i class="dot"></i>Preprint 2026</span>
+            <span class="t">GS-Diff</span>
+            <span class="d">From Pixels to Primitives: scene change detection in 3D Gaussian Splatting.</span>
+          </a>
         </div>
       </div>
-    </div>
-    </div>
-    </div>
-  </section>
+    </section>
 
-
-
-
-  <!-- BibTeX Section -->
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <h2 class="title has-text-centered">BibTeX</h2>
-      <pre><code>@inproceedings{galappaththige2026online,
-  title={Changes in Real Time: Online Scene Change Detection with Multi-View Fusion},
-  author={Galappaththige, Chamuditha Jayanga and Lai, Jason and Windrim, Lloyd and Dansereau, Donald and Sunderhauf, Niko and Miller, Dimity},
-  booktitle={Proceedings of the Computer Vision and Pattern Recognition Conference},
-  year={2026}
-}</code></pre>
-    </div>
-  </section>
-
-
-  <!-- Acknowledgement Section -->
-  <section class="section">
-    <div class="container is-centered has-text-centered">
-      <div class="columns is-four-fifths is-centered">
-        <div class="column is-10">
-          <h2 class="title is-4">Acknowledgement</h2>
-          <div class="content has-text-centered is-size-6">
-            <p>
-              This work was supported by the ARC Research Hub in Intelligent Robotic Systems for Real-Time Asset
-              Management (IH210100030)
-              and Abyss Solutions. C.J., N.S., and D.M. also acknowledge ongoing support from the QUT Centre for
-              Robotics.
-            </p>
-          </div>
+    <section class="section" id="bibtex">
+      <div class="wrap prose">
+        <span class="eyebrow">Citation</span>
+        <h2>BibTeX</h2>
+        <div class="bib">
+          <button class="copy-btn" type="button" data-copy="#bib-oscd"><svg><use href="#i-copy"/></svg><span>Copy</span></button>
+<pre id="bib-oscd">@inproceedings{galappaththige2026online,
+  title     = {Changes in Real Time: Online Scene Change Detection with Multi-View Fusion},
+  author    = {Galappaththige, Chamuditha Jayanga and Lai, Jason and Windrim, Lloyd and Dansereau, Donald and Suenderhauf, Niko and Miller, Dimity},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages     = {32246--32256},
+  year      = {2026}
+}</pre>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="footer centered-footer" style="padding: 2rem 1.5rem;">
-    <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-8">
-          <div class="content" style="font-size: 0.85rem;">
-            <p>
-              This website is licensed under a <a rel="license"
-                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-                Commons Attribution-ShareAlike 4.0 International License.</a> This website template is from <a
-                href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. We sincerely thank the authors for
-              developing and open-sourcing this template.
-            </p>
-          </div>
-        </div>
+    <section class="section" id="ack" style="padding-top: 0">
+      <div class="wrap prose">
+        <p class="ack">This work was supported by the ARC Research Hub in Intelligent Robotic Systems for Real-Time Asset Management (ARIAM, IH210100030) and Abyss Solutions. C.J., N.S. and D.M. also acknowledge ongoing support from the QUT Centre for Robotics.</p>
+        <div class="logos"><img src="static/images/logos.png" width="1675" height="218" loading="lazy" alt="QUT Centre for Robotics, ARIAM, The University of Sydney and Abyss Solutions logos"></div>
       </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      Website licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Layout inspired by <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
     </div>
   </footer>
-
 </body>
-
 </html>

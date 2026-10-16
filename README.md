@@ -1,69 +1,87 @@
-# Changes in Real Time: Online Scene Change Detection with Multi-View Fusion
-*Chamuditha Jayanga, Jason Lai, Lloyd Windrim, Donald Dansereau, Niko Suenderhauf, Dimity Miller*
+<p align="center">
+  <img src="docs/static/icons/oscd.svg" width="56" alt="">
+</p>
 
-[![Static Badge](https://img.shields.io/badge/Project%20Page-%23ecf0f1?logo=homepage&logoColor=%23222222&link=https%3A%2F%2Fchumsy0725.github.io%2FMV-3DCD%2F)](https://chumsy0725.github.io/O-SCD/)
+<h1 align="center">O-SCD: Online Scene Change Detection</h1>
 
 <p align="center">
-<img src="https://github.com/Chumsy0725/O-SCD/blob/main/assets/oscd.gif" alt="" width="800"> </p>
+  Detecting what has changed in a mapped scene while the agent is still on site:<br>
+  online, pose-agnostic, label-free and multi-view consistent.
+</p>
 
-*Abstract*:  Online Scene Change Detection (SCD) is an extremely challenging problem that requires an agent to detect relevant changes on the fly while observing the scene from unconstrained viewpoints. Existing online SCD methods are significantly less accurate than offline approaches. We present the first online SCD approach that is pose-agnostic, label-free, and ensures multi-view consistency, while operating at over 10 FPS and achieving new state-of-the-art performance, surpassing even the best offline approaches.
-    Our method introduces a new self-supervised fusion loss to infer scene changes from multiple cues and observations, PnP-based fast pose estimation against the reference scene, and a fast change-guided update strategy for the 3D Gaussian Splatting scene representation. Extensive experiments on complex real-world datasets demonstrate that our approach outperforms both online and offline baselines.
+<p align="center">
+  <a href="https://chumsy0725.github.io/O-SCD/"><img src="https://img.shields.io/badge/Project%20Page-O--SCD-1f77b4" alt="Project page"></a>
+  <a href="https://arxiv.org/abs/2511.12370"><img src="https://img.shields.io/badge/arXiv-2511.12370-b31b1b" alt="arXiv"></a>
+  <a href="https://huggingface.co/datasets/ChamudithaJay/PASLCD"><img src="https://img.shields.io/badge/Dataset-PASLCD-ffd21e" alt="PASLCD dataset"></a>
+</p>
 
-## BibTeX
+<p align="center">
+  <img src="O-SCD/assets/oscd.gif" width="800" alt="O-SCD detecting changes online">
+</p>
+
+This repository hosts the O-SCD line of work on online scene change detection. Each method lives in its own self-contained directory, with its own environment, dependencies and scripts.
+
+## News
+
+- **2026**: O-SCD is accepted to **CVPR 2026** as a **Highlight**.
+- **Coming soon**: O-SCD++ paper and code.
+
+## Methods
+
+| Method | Paper | Venue | Links | Code |
+|---|---|---|---|---|
+| **O-SCD** | Changes in Real Time: Online Scene Change Detection with Multi-View Fusion | CVPR 2026 (Highlight) | [Project page](https://chumsy0725.github.io/O-SCD/) · [Paper](https://openaccess.thecvf.com/content/CVPR2026/html/Galappaththige_Changes_in_Real_Time_Online_Scene_Change_Detection_with_Multi-View_CVPR_2026_paper.html) · [arXiv](https://arxiv.org/abs/2511.12370) | [`O-SCD/`](O-SCD) |
+| **O-SCD++** | Coming soon | – | [Project page](https://chumsy0725.github.io/O-SCD/plusplus/) | [`O-SCD++/`](O-SCD%2B%2B) |
+
+## Repository layout
+
+```
+O-SCD/       CVPR 2026 code
+O-SCD++/     coming soon
+docs/        project website
+```
+
+## Getting started
+
+Each method is installed and run from inside its own directory. For O-SCD:
+
 ```shell
+git clone https://github.com/Chumsy0725/O-SCD.git
+cd O-SCD/O-SCD
+```
 
+then follow [`O-SCD/README.md`](O-SCD/README.md).
 
+## Dataset
+
+All methods are evaluated on **PASLCD**, available on [HuggingFace](https://huggingface.co/datasets/ChamudithaJay/PASLCD).
+
+## Related work
+
+- [MV3DCD](https://chumsy0725.github.io/MV-3DCD/): Multi-View Pose-Agnostic Change Localization with Zero Labels (CVPR 2025)
+- [GS-Diff](https://chumsy0725.github.io/GS-DIFF/): From Pixels to Primitives: Scene Change Detection in 3D Gaussian Splatting
+
+## Citation
+
+If you find this work useful, please cite:
+
+```bibtex
 @inproceedings{galappaththige2026online,
-  title={Changes in Real Time: Online Scene Change Detection with Multi-View Fusion},
-  author={Galappaththige, Chamuditha Jayanga and Lai, Jason and Windrim, Lloyd and Dansereau, Donald and Sunderhauf, Niko and Miller, Dimity},
-  booktitle={Proceedings of the Computer Vision and Pattern Recognition Conference},
-  year={2026}
+  title     = {Changes in Real Time: Online Scene Change Detection with Multi-View Fusion},
+  author    = {Galappaththige, Chamuditha Jayanga and Lai, Jason and Windrim, Lloyd and Dansereau, Donald and Suenderhauf, Niko and Miller, Dimity},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages     = {32246--32256},
+  year      = {2026}
 }
 ```
-## Environment Setup
+## License
 
-We use `Conda` for environment and package management. 
-
-```shell
-conda create -n oscd python=3.12 -y
-conda activate oscd
-
-pip install torch torchvision xformers --index-url https://download.pytorch.org/whl/cu128
-pip install cupy-cuda12x
-pip install -r requirements.txt
-
-```
-
-I have incorporated the released codebase with [FastGS](https://github.com/fastgs/FastGS). This would give you slightly better and faster performance than reported. 
-
-## Data Preparation
-
-Download PASLCD (online) dataset from [HuggingFace](https://huggingface.co/datasets/ChamudithaJay/PASLCD/blob/main/PASLCD_online.zip) and unzip in to the `data` directory.
-
-## Running Experiments
-
-To run the SCD experiments for all 20 instances, you can use the `run_oscd.sh` script.
-```shell
-bash run_oscd.sh
-```
-
-To run the Scene Update for all 20 instances, you can use the `run_update.sh` script.
-```shell
-bash run_update.sh
-```
-
-To initialize the viewer for any given scene (after running Scene Update/SCD), use the `run_viewer.sh` script.
-```shell
-bash run_viewer.sh "Scene" "Instance"
-```
+This code is released for non-commercial academic research and evaluation only. Third-party components retain their own licenses.
 
 ### Acknowledgement
 
-Our code is based on [3D Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting), [on-the-fly-nvs](https://github.com/graphdeco-inria/on-the-fly-nvs), [FastGS](https://github.com/fastgs/FastGS) and [SAMv2](https://github.com/facebookresearch/sam2). We sincerely thank the authors for open-sourcing their codebase. 
+Our code is based on [3D Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting), [on-the-fly-nvs](https://github.com/graphdeco-inria/on-the-fly-nvs), [FastGS](https://github.com/fastgs/FastGS) and [SAMv2](https://github.com/facebookresearch/sam2). We sincerely thank the authors for open-sourcing their codebase.
 
 ### Funding Acknowledgement
 
 This work was supported by the ARC Research Hub in Intelligent Robotic Systems for Real-Time Asset Management (ARIAM) (IH210100030) and Abyss Solutions. C.J., N.S., and D.M. also acknowledge ongoing support from the QUT Centre for Robotics.
-
-
-
