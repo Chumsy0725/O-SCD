@@ -11,7 +11,8 @@
 
 <p align="center">
   <a href="https://chumsy0725.github.io/O-SCD/"><img src="https://img.shields.io/badge/Project%20Page-O--SCD-1f77b4" alt="Project page"></a>
-  <a href="https://arxiv.org/abs/2511.12370"><img src="https://img.shields.io/badge/arXiv-2511.12370-b31b1b" alt="arXiv"></a>
+  <a href="https://arxiv.org/abs/2511.12370"><img src="https://img.shields.io/badge/arXiv%20(O--SCD)-2511.12370-b31b1b" alt="O-SCD on arXiv"></a>
+  <a href="https://arxiv.org/abs/2610.24462"><img src="https://img.shields.io/badge/arXiv%20(O--SCD%2B%2B)-2610.24462-b31b1b" alt="O-SCD++ on arXiv"></a>
   <a href="https://huggingface.co/datasets/ChamudithaJay/PASLCD"><img src="https://img.shields.io/badge/Dataset-PASLCD-ffd21e" alt="PASLCD dataset"></a>
 </p>
 
@@ -24,20 +25,20 @@ This repository hosts the O-SCD line of work on online scene change detection. E
 ## News
 
 - **2026**: O-SCD is accepted to **CVPR 2026** as a **Highlight**.
-- **2026**: O-SCD++ preprint and code released.
+- **2026**: O-SCD++ preprint released on [arXiv](https://arxiv.org/abs/2610.24462); code coming soon.
 
 ## Methods
 
 | Method | Paper | Venue | Links | Code |
 |---|---|---|---|---|
 | **O-SCD** | Changes in Real Time: Online Scene Change Detection with Multi-View Fusion | CVPR 2026 (Highlight) | [Project page](https://chumsy0725.github.io/O-SCD/) · [Paper](https://openaccess.thecvf.com/content/CVPR2026/html/Galappaththige_Changes_in_Real_Time_Online_Scene_Change_Detection_with_Multi-View_CVPR_2026_paper.html) · [arXiv](https://arxiv.org/abs/2511.12370) | [`O-SCD/`](O-SCD) |
-| **O-SCD++** | O-SCD++: Replay-Free Online Scene Change Detection via Recursive Evidence Fusion | Preprint 2026 | [Project page](https://chumsy0725.github.io/O-SCD/plusplus/) | [`O-SCD++/`](O-SCD%2B%2B) |
+| **O-SCD++** | O-SCD++: Replay-Free Online Scene Change Detection via Recursive Evidence Fusion | Preprint 2026 | [Project page](https://chumsy0725.github.io/O-SCD/plusplus/) · [arXiv](https://arxiv.org/abs/2610.24462) | [`O-SCD++/`](O-SCD%2B%2B) |
 
 ## Repository layout
 
 ```
 O-SCD/       CVPR 2026 code
-O-SCD++/     O-SCD++ code
+O-SCD++/     coming soon
 docs/        project website
 ```
 
