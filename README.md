@@ -67,6 +67,13 @@ All methods are evaluated on **PASLCD**, available on [HuggingFace](https://hugg
 If you find this work useful, please cite:
 
 ```bibtex
+@article{galappaththige2026oscdpp,
+  title   = {O-SCD++: Replay-Free Online Scene Change Detection via Recursive Evidence Fusion},
+  author  = {Galappaththige, Chamuditha Jayanga and Lai, Jason and Windrim, Lloyd and Patten, Timothy and Dansereau, Donald G. and Suenderhauf, Niko and Miller, Dimity},
+  journal = {arXiv preprint arXiv:2610.24462},
+  year    = {2026}
+}
+
 @inproceedings{galappaththige2026online,
   title     = {Changes in Real Time: Online Scene Change Detection with Multi-View Fusion},
   author    = {Galappaththige, Chamuditha Jayanga and Lai, Jason and Windrim, Lloyd and Dansereau, Donald and Suenderhauf, Niko and Miller, Dimity},
@@ -75,6 +82,7 @@ If you find this work useful, please cite:
   year      = {2026}
 }
 ```
+
 ## License
 
 This code is released for non-commercial academic research and evaluation only. Third-party components retain their own licenses.
