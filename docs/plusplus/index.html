@@ -157,7 +157,7 @@
                   { "series": "oscd", "x": 2.9, "y": 0.518, "name": "O-SCD, 128 iterations/frame", "tip": "2.9 FPS · mIoU 0.518", "color": "oscd", "shape": "square", "size": 5, "label": "128", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
                   { "series": "oscd", "x": 4.84, "y": 0.5064, "name": "O-SCD, 64 iterations/frame", "tip": "4.8 FPS · mIoU 0.506", "color": "oscd", "shape": "square", "size": 5, "label": "64", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
                   { "series": "oscd", "x": 8.39, "y": 0.4907, "name": "O-SCD, 32 iterations/frame", "tip": "8.4 FPS · mIoU 0.491", "color": "oscd", "shape": "square", "size": 5, "label": "32", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
-                  { "series": "oscd", "x": 12.01, "y": 0.4866, "name": "O-SCD, 16 iterations/frame (default)", "tip": "12.0 FPS · mIoU 0.487", "color": "oscd", "shape": "square", "size": 5, "label": "16 (default)", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
+                  { "series": "oscd", "x": 11.8, "y": 0.489, "name": "O-SCD, 16 iterations/frame (default)", "tip": "11.8 FPS · mIoU 0.489", "color": "oscd", "shape": "square", "size": 5, "label": "16 (default)", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
                   { "series": "oscd", "x": 15.88, "y": 0.4808, "name": "O-SCD, 8 iterations/frame", "tip": "15.9 FPS · mIoU 0.481", "color": "oscd", "shape": "square", "size": 5, "label": "8", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
                   { "series": "oscd", "x": 19.79, "y": 0.4763, "name": "O-SCD, 4 iterations/frame", "tip": "19.8 FPS · mIoU 0.476", "color": "oscd", "shape": "square", "size": 5, "label": "4", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
                   { "series": "oscd", "x": 22.40, "y": 0.4586, "name": "O-SCD, 2 iterations/frame", "tip": "22.4 FPS · mIoU 0.459", "color": "oscd", "shape": "square", "size": 5, "label": "2", "muted": true, "anchor": "middle", "dx": 0, "dy": -12 },
@@ -183,8 +183,8 @@
       <div class="wrap prose abstract">
         <span class="eyebrow">Abstract</span>
         <h2>Removing the accuracy–speed trade-off</h2>
-        <p>Online scene change detection requires an agent to detect what has changed in a previously mapped environment while it is still on site, observing from unconstrained viewpoints and without access to future observations. This causal setting is strictly harder than its offline counterpart, and online methods have consistently trailed offline accuracy. O-SCD closed that gap by treating change as a persistent property of a 3D Gaussian splatting map of the reference scene, surpassing the strongest offline methods in change detection accuracy while operating at over 10 frames per second. O-SCD optimizes a change field over the Gaussians of the reference map, refitting it to all past cue maps at every frame, a step that consumes more than half of the per-frame budget and forces accuracy to be traded against speed.</p>
-        <p>We present a <strong>replay-free formulation</strong> that eliminates this trade-off. Because the reference map stays fixed, rendering the change field is a linear operation. Each new observation can therefore be carried onto the map's Gaussians directly, by <strong>a single backward pass of the renderer</strong>, which reduces multi-view fusion to an <strong>exact two-scalar recursion per Gaussian</strong>. Past observations are never stored or revisited. The self-supervised objective that O-SCD minimizes by descent also determines the decision threshold exactly, by sorting, yielding a <strong>label-free per-frame cutoff</strong> whose margin provides a selective-prediction signal. On PASLCD, our method improves mean intersection over union from 0.489 to 0.575 and throughput from 11.8 to 25.6 frames per second, even exceeding O-SCD's offline result while remaining strictly causal.</p>
+        <p>Online scene change detection requires an autonomous agent to detect what has changed in a previously mapped environment while it is still on site, observing from unconstrained viewpoints and without access to future observations. This causal setting is strictly harder than offline detection, and online methods have long trailed offline accuracy. Our earlier method, O-SCD, closed that gap at over 10 frames per second, but its multi-view fusion is an iterative optimization that refits a change field over a 3D Gaussian splatting map of the reference scene to all past observations at every frame. This step consumes over half of the per-frame budget and forces accuracy to be traded against speed.</p>
+        <p>We present O-SCD++, a replay-free formulation that eliminates this trade-off. Because the reference map stays fixed, rendering the change field is a linear operation. Each new observation can therefore be carried onto the map's Gaussians by a single backward pass of the renderer and fused by a two-scalar recursion per Gaussian. Past observations are never stored or revisited. O-SCD++ also makes the change/no-change decision without labels or iterative optimization. It sets each frame's threshold to the exact minimizer of O-SCD's self-supervised objective over threshold masks, using one sort, and the distance to this threshold gives a per-pixel decision margin that predicts errors. On PASLCD, O-SCD++ improves change detection accuracy (mIoU) from 0.489 to 0.575 and throughput from 11.8 to 25.6 frames per second, exceeding O-SCD's offline result while remaining causal. Code will be released upon acceptance.</p>
       </div>
     </section>
 
@@ -196,11 +196,11 @@
         <figure class="fig">
           <div class="paper">
             <a class="zoom" href="../static/oscdpp/images/overview.jpg" aria-label="Open the full-resolution overview figure">
-              <img src="../static/oscdpp/images/overview.jpg" width="2451" height="865" loading="lazy" alt="O-SCD++ overview. Front end adopted from O-SCD: pose estimation and reference rendering produce a change cue. Replay-free change stage: rendering-adjoint transfer (one backward pass), per-primitive state updated by exact recursion, current-view prediction, and an exact label-free decision by sort and scan, giving a binary change mask and a decision margin. The iterative change stage of O-SCD is shown dashed.">
+              <img src="../static/oscdpp/images/overview.jpg" width="2178" height="774" loading="lazy" alt="O-SCD++ overview. Front end adopted from O-SCD: pose estimation and reference rendering produce a change cue. Replay-free change stage: evidence transfer (one backward pass), per-primitive state updated by exact recursion, current-view prediction, and an exact label-free decision by sort and scan, giving a binary change mask and a decision margin. The iterative change stage of O-SCD is shown dashed.">
             </a>
           </div>
           <span class="zoom-hint">Click to open full resolution · equation, section and proposition numbers refer to the paper</span>
-          <figcaption><b>Figure 2.</b> Overview of O-SCD++ for one inference frame. The front end, adopted from O-SCD, registers the inference image against the reference map and computes a change cue. The replay-free change stage transfers the cue onto the reference primitives with one rasterizer backward pass, folds it into a two-scalar state per primitive by an exact recursion, predicts a score for the current view from the updated state and the current cue, and binarizes it with the exact minimizer of a label-free objective, which also yields a per-pixel decision margin. It eliminates the replay-based optimization of O-SCD (dashed).</figcaption>
+          <figcaption><b>Figure 2.</b> Overview of O-SCD++ for one inference frame. The front end, adopted from O-SCD, registers the inference image against the reference map and computes a change cue. The replay-free change detection stage transfers the cue onto the reference primitives with one rasterizer backward pass, folds it into a two-scalar state per primitive by an exact recursion, predicts a score for the current view from the updated state and the current cue, and binarizes it with the exact minimizer of a label-free objective, which also yields a per-pixel decision margin. It eliminates the replay-based optimization of O-SCD (dashed).</figcaption>
         </figure>
 
         <div class="card" style="padding: clamp(14px, 2.4vw, 24px); margin-top: 36px">
@@ -213,10 +213,10 @@
             <div class="step">(i)<small>Transfer</small></div>
             <div class="box old">Gradient steps on the self-supervised loss, backpropagated through the rasterizer</div>
             <div class="arrow" aria-hidden="true"><svg><use href="#i-arrow"/></svg></div>
-            <div class="box new">One rasterizer backward pass applies the rendering adjoint A<sup>&#8868;</sup></div>
+            <div class="box new">One rasterizer backward pass applies A<sup>&#8868;</sup></div>
 
             <div class="step">(ii)<small>Combine</small></div>
-            <div class="box old">Replay: <i>n</i>&nbsp;=&nbsp;16 steps per frame on stored cue maps <i>c</i><sub>1</sub>, …, <i>c</i><sub><i>t</i></sub></div>
+            <div class="box old">Replay: <i>b</i>&nbsp;=&nbsp;16 steps per frame on stored cue maps <i>c</i><sub>1</sub>, …, <i>c</i><sub><i>t</i></sub></div>
             <div class="arrow" aria-hidden="true"><svg><use href="#i-arrow"/></svg></div>
             <div class="box new">Exact recursion on two scalars (<i>q</i><sub><i>g</i></sub>, <i>W</i><sub><i>g</i></sub>) per Gaussian</div>
 
@@ -228,9 +228,9 @@
             <div class="gap"></div>
 
             <div class="step">Cost<small>per frame</small></div>
-            <div class="box old" style="font-size: 14px"><i>n</i>(<i>T</i><sub>rast</sub> + <i>T</i><sub>adj</sub>) + <i>T</i><sub>rast</sub><br>memory <i>O</i>(<i>G</i> + <i>tN</i>)</div>
+            <div class="box old" style="font-size: 14px"><i>b</i>(<i>T</i><sub>rast</sub> + <i>T</i><sub>bwd</sub>) + <i>T</i><sub>rast</sub><br>memory <i>O</i>(<i>G</i> + <i>tN</i>)</div>
             <div class="arrow" aria-hidden="true"><svg><use href="#i-arrow"/></svg></div>
-            <div class="box new" style="font-size: 14px">2<i>T</i><sub>rast</sub> + <i>T</i><sub>adj</sub> + <i>O</i>(<i>N</i> log <i>N</i>)<br>memory <i>O</i>(<i>G</i>)</div>
+            <div class="box new" style="font-size: 14px">2<i>T</i><sub>rast</sub> + <i>T</i><sub>bwd</sub> + <i>O</i>(<i>N</i> log <i>N</i>)<br>memory <i>O</i>(<i>G</i> + <i>N</i>)</div>
 
             <div class="step">PASLCD<small>online</small></div>
             <div class="box old"><span class="num">0.489</span> mIoU · <span class="num">11.8</span> FPS</div>
@@ -238,12 +238,12 @@
             <div class="box new"><span class="num">0.575</span> mIoU · <span class="num">25.6</span> FPS</div>
           </div>
         </div>
-        <p class="table-note">The per-frame cost loses its iteration budget <i>n</i> and its dependence on the number <i>t</i> of frames processed. <i>G</i>: primitives; <i>N</i>: pixels.</p>
+        <p class="table-note">The per-frame cost loses its iteration budget <i>b</i> and its dependence on the number <i>t</i> of frames processed. <i>G</i>: primitives; <i>N</i>: pixels.</p>
 
         <div class="cards" style="margin-top: 28px">
           <div class="pcard"><span class="meta">Exactness</span><span class="t">Order-invariant</span><span class="d">The state reached after a sequence does not depend on the order in which the frames arrive.</span></div>
           <div class="pcard"><span class="meta">Exactness</span><span class="t">Retrospective re-inference</span><span class="d">Re-applied to every frame, the final state improves on the online masks without any refinement.</span></div>
-          <div class="pcard"><span class="meta">Exactness</span><span class="t">Decision margins</span><span class="d">The exact decision yields a per-pixel margin: to our knowledge the first confidence signal from a label-free online SCD method.</span></div>
+          <div class="pcard"><span class="meta">Exactness</span><span class="t">Decision margins</span><span class="d">The exact decision also provides a per-pixel margin that ranks decisions by confidence.</span></div>
         </div>
       </div>
     </section>
@@ -388,6 +388,7 @@
               <tr><td>CS+CYWS2D</td><td class="no">–</td><td class="no">–</td><td class="no">–</td><td>0.243</td><td>0.360</td><td>8.2</td></tr>
               <tr><td>CS+GeSCF</td><td class="yes">✓</td><td class="no">–</td><td class="no">–</td><td>0.181</td><td>0.270</td><td>&lt;1</td></tr>
               <tr><td>FastGeSCF</td><td class="no">–</td><td class="no">–</td><td class="no">–</td><td>0.122</td><td>0.198</td><td>1.43</td></tr>
+              <tr><td>OmniposeAD</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">–</td><td>0.168</td><td>0.262</td><td>&lt;1</td></tr>
               <tr><td>SplatPose</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">–</td><td>0.173</td><td>0.281</td><td>&lt;1</td></tr>
               <tr><td>SplatPose+</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">–</td><td>0.237</td><td>0.358</td><td>&lt;1</td></tr>
               <tr><td>O-SCD</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="second">0.489</td><td class="second">0.643</td><td class="second">11.8</td></tr>
@@ -428,6 +429,7 @@
                 <tr><td>CS+CYWS2D</td><td class="bl">0.372</td><td>0.519</td><td class="bl">0.271</td><td>0.408</td></tr>
                 <tr><td>CS+GeSCF</td><td class="bl">0.520</td><td>0.630</td><td class="bl">0.348</td><td>0.484</td></tr>
                 <tr><td>FastGeSCF</td><td class="bl">0.183</td><td>0.252</td><td class="bl">0.315</td><td>0.458</td></tr>
+                <tr><td>OmniposeAD</td><td class="bl">0.166</td><td>0.247</td><td class="bl">0.073</td><td>0.125</td></tr>
                 <tr><td>SplatPose</td><td class="bl">0.224</td><td>0.320</td><td class="bl">0.061</td><td>0.108</td></tr>
                 <tr><td>SplatPose+</td><td class="bl">0.556</td><td>0.700</td><td class="bl">0.115</td><td>0.186</td></tr>
                 <tr><td>O-SCD</td><td class="bl second">0.657</td><td class="second">0.773</td><td class="bl second">0.404</td><td class="second">0.535</td></tr>
@@ -443,11 +445,11 @@
                 <tr><th scope="col" class="bl">ms</th><th scope="col">%</th><th scope="col" class="bl">ms</th><th scope="col">%</th></tr>
               </thead>
               <tbody>
-                <tr><td><strong>Pose estimation</strong></td><td class="bl">30.4</td><td>36.0</td><td class="bl">30.2</td><td>77</td></tr>
-                <tr class="divider"><td><strong>Change detection</strong></td><td class="bl">54.4</td><td>64.0</td><td class="bl best">9.0</td><td>23</td></tr>
+                <tr><td><strong>Pose estimation</strong></td><td class="bl">30.4</td><td>35.8</td><td class="bl">30.2</td><td>77.0</td></tr>
+                <tr class="divider"><td><strong>Change detection</strong></td><td class="bl">54.4</td><td>64.2</td><td class="bl best">9.0</td><td>23.0</td></tr>
                 <tr class="sub"><td>Change cue generation</td><td class="bl">6.1</td><td>7.2</td><td class="bl">5.9</td><td>15.0</td></tr>
-                <tr class="sub"><td>Multi-view fusion</td><td class="bl">47.8</td><td>56.5</td><td class="bl best">2.1</td><td>5.5</td></tr>
-                <tr class="sub"><td>Mask inference</td><td class="bl">0.5</td><td>0.3</td><td class="bl">1.0</td><td>2.5</td></tr>
+                <tr class="sub"><td>Multi-view fusion</td><td class="bl">47.8</td><td>56.4</td><td class="bl best">2.1</td><td>5.4</td></tr>
+                <tr class="sub"><td>Mask inference</td><td class="bl">0.5</td><td>0.6</td><td class="bl">1.0</td><td>2.6</td></tr>
               </tbody>
             </table>
           </div>
